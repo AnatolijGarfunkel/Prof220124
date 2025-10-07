@@ -43,8 +43,8 @@ public class TestArrayList implements MyList{
     public void add(int index, int value) {
 
         if (position < array.length) {
-            for (int i = position; i >= index; i --) {
-                array[position] = array[position - 1];
+            for (int i = position; i > index; i --) {
+                array[i] = array[i - 1];
             }
             array[index] = value;
             position ++;
