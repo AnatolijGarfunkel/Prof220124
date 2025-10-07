@@ -8,7 +8,7 @@ public class Test {
 
         TestArrayList list = new TestArrayList();
 
-        for (int i = 0; i <= 9; i ++) {
+        for (int i = 1; i <= 10; i ++) {
             list.add(i);
         }
 
