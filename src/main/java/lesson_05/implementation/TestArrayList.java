@@ -64,7 +64,7 @@ public class TestArrayList implements MyList{
     }
 
     private boolean proofIndex(int index) {
-        return index < position;
+        return index < position & index >= 0;
     }
 
     @Override
@@ -74,7 +74,12 @@ public class TestArrayList implements MyList{
 
     @Override
     public void set(int index, int value) {
-
+        if (proofIndex(index)) {
+            array[index] = value;
+        }
+        else {
+            System.out.println("Index passt nicht!");
+        }
     }
 
     @Override

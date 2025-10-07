@@ -8,7 +8,7 @@ public class Test {
 
         TestArrayList list = new TestArrayList();
 
-        for (int i = 1; i <= 9; i ++) {
+        for (int i = 0; i <= 9; i ++) {
             list.add(i);
         }
 
@@ -16,7 +16,7 @@ public class Test {
         System.out.println("array.length: " + list.getArrayLength());
         System.out.println(list);
 
-        list.add(0, -1);
+        list.set(-1, -1);
 
         System.out.println("size(position): " + list.size());
         System.out.println("array.length: " + list.getArrayLength());
