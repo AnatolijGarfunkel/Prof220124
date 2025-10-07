@@ -16,7 +16,7 @@ public class Test {
         System.out.println("array.length: " + list.getArrayLength());
         System.out.println(list);
 
-        list.add(0, -1);
+        list.set(-1, -1);
 
         System.out.println("size(position): " + list.size());
         System.out.println("array.length: " + list.getArrayLength());
