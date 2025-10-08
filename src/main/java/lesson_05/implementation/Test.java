@@ -1,26 +1,17 @@
 package lesson_05.implementation;
 
-import java.util.Arrays;
-
 public class Test {
 
     public static void main(String[] args) {
 
-        TestArrayList list = new TestArrayList();
+        int [] array = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-        for (int i = 0; i <= 9; i ++) {
-            list.add(i);
-        }
+        TestArrayList list = new TestArrayList(array);
 
-        System.out.println("size(position): " + list.size());
-        System.out.println("array.length: " + list.getArrayLength());
-        System.out.println(list);
+        list.add(11, 23);
 
-        list.remove(9);
-        list.remove(8);
-        list.remove(7);
 
-        System.out.println();
+
         System.out.println("size(position): " + list.size());
         System.out.println("array.length: " + list.getArrayLength());
         System.out.println(list);

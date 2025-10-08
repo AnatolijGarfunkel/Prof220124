@@ -14,11 +14,10 @@ public class TestArrayList implements MyList {
     }
 
 
-    public TestArrayList(int...array) {
-        for (int data: array)
+    public TestArrayList(int... array) {
+        for (int data : array)
             add(data);
     }
-
 
 
     @Override
@@ -29,13 +28,11 @@ public class TestArrayList implements MyList {
     @Override
     public void add(int value) {
 
-        if (position < array.length) {
-            array[position] = value;
-            position++;
-        } else {
+        if (position == array.length)
             increase();
-            add(value);
-        }
+
+        array[position] = value;
+        position++;
     }
 
     private void increase() {
@@ -45,17 +42,18 @@ public class TestArrayList implements MyList {
 
     @Override
     public void add(int index, int value) {
-
-        if (position < array.length) {
-            for (int i = position; i > index; i--) {
+        if (proofIndex(index)) {
+            if (index == position) {
+                increase();
+            }
+            for (int i = position; i >= index; i --) {
                 array[i] = array[i - 1];
             }
             array[index] = value;
-            position++;
-        } else {
-            increase();
-            add(index, value);
+            position ++;
         }
+        else
+            System.out.println("index passt nicht.");
     }
 
     @Override
@@ -77,8 +75,7 @@ public class TestArrayList implements MyList {
                 array[i] = array[i + 1];
             }
             position--;
-        }
-        else
+        } else
             System.out.println("index passt nicht!");
     }
 
