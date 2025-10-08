@@ -8,7 +8,7 @@ public class Test {
 
         TestArrayList list = new TestArrayList();
 
-        for (int i = 1; i <= 10; i ++) {
+        for (int i = 0; i <= 9; i ++) {
             list.add(i);
         }
 
@@ -16,11 +16,14 @@ public class Test {
         System.out.println("array.length: " + list.getArrayLength());
         System.out.println(list);
 
-        boolean contains = list.contains(13);
-        if (contains)
-            System.out.println("element " + 4 + " ist vorhanden.");
-        else
-            System.out.println("element " + 13 + " ist nicht vorhanden.");
+        list.remove(9);
+        list.remove(8);
+        list.remove(7);
+
+        System.out.println();
+        System.out.println("size(position): " + list.size());
+        System.out.println("array.length: " + list.getArrayLength());
+        System.out.println(list);
 
     }
 }
