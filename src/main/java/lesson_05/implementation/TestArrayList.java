@@ -14,6 +14,13 @@ public class TestArrayList implements MyList {
     }
 
 
+    public TestArrayList(int...array) {
+        for (int data: array)
+            add(data);
+    }
+
+
+
     @Override
     public int size() {
         return position;
