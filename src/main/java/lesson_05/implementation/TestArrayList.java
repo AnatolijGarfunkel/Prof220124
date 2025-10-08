@@ -2,13 +2,11 @@ package lesson_05.implementation;
 
 import java.util.Arrays;
 
-public class TestArrayList implements MyList{
+public class TestArrayList implements MyList {
 
     private int position = 0;
 
-    private int [] array = new int[10];
-
-
+    private int[] array = new int[10];
 
 
     public int getArrayLength() {
@@ -26,9 +24,8 @@ public class TestArrayList implements MyList{
 
         if (position < array.length) {
             array[position] = value;
-            position ++;
-        }
-        else {
+            position++;
+        } else {
             increase();
             add(value);
         }
@@ -43,13 +40,12 @@ public class TestArrayList implements MyList{
     public void add(int index, int value) {
 
         if (position < array.length) {
-            for (int i = position; i > index; i --) {
+            for (int i = position; i > index; i--) {
                 array[i] = array[i - 1];
             }
             array[index] = value;
-            position ++;
-        }
-        else {
+            position++;
+        } else {
             increase();
             add(index, value);
         }
@@ -69,23 +65,29 @@ public class TestArrayList implements MyList{
 
     @Override
     public void remove(int index) {
-
+        if (proofIndex(index)) {
+            for (int i = index; i < position - 1; i++) {
+                array[i] = array[i + 1];
+            }
+            position--;
+        }
+        else
+            System.out.println("index passt nicht!");
     }
 
     @Override
     public void set(int index, int value) {
         if (proofIndex(index)) {
             array[index] = value;
-        }
-        else {
+        } else {
             System.out.println("Index passt nicht!");
         }
     }
 
     @Override
     public boolean contains(int value) {
-        for (int data: array) {
-            if(data == value)
+        for (int data : array) {
+            if (data == value)
                 return true;
         }
         return false;
@@ -96,7 +98,7 @@ public class TestArrayList implements MyList{
 
         String string = "[";
 
-        for (int i = 0; i <= position; i ++) {
+        for (int i = 0; i <= position; i++) {
             if (i == position - 1) {
                 string += array[i];
                 break;
