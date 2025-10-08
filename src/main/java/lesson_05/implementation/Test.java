@@ -16,11 +16,11 @@ public class Test {
         System.out.println("array.length: " + list.getArrayLength());
         System.out.println(list);
 
-        list.set(-1, -1);
-
-        System.out.println("size(position): " + list.size());
-        System.out.println("array.length: " + list.getArrayLength());
-        System.out.println(list);
+        boolean contains = list.contains(13);
+        if (contains)
+            System.out.println("element " + 4 + " ist vorhanden.");
+        else
+            System.out.println("element " + 13 + " ist nicht vorhanden.");
 
     }
 }

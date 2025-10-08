@@ -84,6 +84,10 @@ public class TestArrayList implements MyList{
 
     @Override
     public boolean contains(int value) {
+        for (int data: array) {
+            if(data == value)
+                return true;
+        }
         return false;
     }
 
