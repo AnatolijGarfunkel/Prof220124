@@ -116,6 +116,22 @@ public class TestArrayList implements MyList {
     }
 
     @Override
+    public Iterator<Integer> backward() {
+        return new Iterator<Integer>() {
+            int position = size();
+            @Override
+            public boolean hasNext() {
+                return position > 0;
+            }
+
+            @Override
+            public Integer next() {
+                return array[-- position];
+            }
+        };
+    }
+
+    @Override
     public String toString() {
 
         String string = "[";
