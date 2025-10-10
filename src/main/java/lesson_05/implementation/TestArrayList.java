@@ -118,7 +118,7 @@ public class TestArrayList implements MyList {
     @Override
     public String toString() {
 
-        String string = "["
+        String string = "[";
 
         for (int i = 0; i <= position; i++) {
             if (i == position - 1) {
