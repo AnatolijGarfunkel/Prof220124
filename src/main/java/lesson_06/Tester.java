@@ -11,7 +11,8 @@ public class Tester {
                         "Bogota",
                         "Buenos-Aires",
                         "Santiago",
-                        "Berlin"
+                        "Berlin",
+                        "Paris"
                 )
         );
 
