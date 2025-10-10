@@ -14,6 +14,15 @@ public class Tester {
                         "Berlin"
                 )
         );
+
+        Iterator<String> iterator = capitals.iterator();
+
+        while (iterator.hasNext()) {
+            if (iterator.next().charAt(0) == 'B')
+                iterator.remove();
+        }
+
+        System.out.println(capitals);
     }
 }
 
