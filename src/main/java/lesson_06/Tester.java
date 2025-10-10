@@ -30,9 +30,15 @@ public class Tester {
 
         Iterator<String> stringIterator = rivers.iterator();
 
-        MyList myList = new TestArrayList(1, 2, 3);
+        MyList myList = new TestArrayList(1, 2, 3, -4);
 
-        myList.iterator();
+        Iterator<Integer> backward = myList.backward();
+
+        System.out.println();
+        while (backward.hasNext())
+            System.out.printf(backward.next() + " ");
+        System.out.println();
+
     }
 }
 
