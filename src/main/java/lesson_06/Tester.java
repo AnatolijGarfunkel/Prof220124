@@ -1,5 +1,8 @@
 package lesson_06;
 
+import lesson_05.implementation.MyList;
+import lesson_05.implementation.TestArrayList;
+
 import java.util.*;
 
 public class Tester {
@@ -16,14 +19,18 @@ public class Tester {
                 )
         );
 
-        Iterator<String> iterator = capitals.iterator();
+        MyList myList = new TestArrayList(1, 3, -5, 7);
+
+        Iterator<Integer> iterator = myList.iterator();
 
         while (iterator.hasNext()) {
-            if (iterator.next().startsWith("B"))
+            Integer next = iterator.next();
+            if (next < 0)
                 iterator.remove();
         }
 
-        System.out.println(capitals);
+        System.out.println(myList);
+
     }
 }
 
