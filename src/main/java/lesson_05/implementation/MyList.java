@@ -19,4 +19,6 @@ public interface MyList {
     boolean contains(int value);
 
     Iterator<Integer> iterator();
+
+    Iterator<Integer> backward();
 }
