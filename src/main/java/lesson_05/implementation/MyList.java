@@ -1,5 +1,7 @@
 package lesson_05.implementation;
 
+import java.util.Iterator;
+
 public interface MyList {
 
     int size();
@@ -16,4 +18,5 @@ public interface MyList {
 
     boolean contains(int value);
 
+    Iterator<Integer> iterator();
 }

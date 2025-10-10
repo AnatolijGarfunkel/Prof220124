@@ -1,6 +1,7 @@
 package lesson_05.implementation;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class TestArrayList implements MyList {
 
@@ -14,6 +15,12 @@ public class TestArrayList implements MyList {
     }
 
 
+    public TestArrayList(int... array) {
+        for (int data : array)
+            add(data);
+    }
+
+
     @Override
     public int size() {
         return position;
@@ -22,13 +29,11 @@ public class TestArrayList implements MyList {
     @Override
     public void add(int value) {
 
-        if (position < array.length) {
-            array[position] = value;
-            position++;
-        } else {
+        if (position == array.length)
             increase();
-            add(value);
-        }
+
+        array[position] = value;
+        position++;
     }
 
     private void increase() {
@@ -38,17 +43,18 @@ public class TestArrayList implements MyList {
 
     @Override
     public void add(int index, int value) {
-
-        if (position < array.length) {
-            for (int i = position; i > index; i--) {
+        if (proofIndex(index)) {
+            if (index == position) {
+                increase();
+            }
+            for (int i = position; i >= index; i --) {
                 array[i] = array[i - 1];
             }
             array[index] = value;
-            position++;
-        } else {
-            increase();
-            add(index, value);
+            position ++;
         }
+        else
+            System.out.println("index passt nicht.");
     }
 
     @Override
@@ -70,8 +76,7 @@ public class TestArrayList implements MyList {
                 array[i] = array[i + 1];
             }
             position--;
-        }
-        else
+        } else
             System.out.println("index passt nicht!");
     }
 
@@ -94,9 +99,26 @@ public class TestArrayList implements MyList {
     }
 
     @Override
+    public Iterator<Integer> iterator() {
+        return new Iterator<>() {
+            int position = 0;
+
+            @Override
+            public boolean hasNext() {
+                return position < size();
+            }
+
+            @Override
+            public Integer next() {
+                return array[position ++];
+            }
+        };
+    }
+
+    @Override
     public String toString() {
 
-        String string = "[";
+        String string = "["
 
         for (int i = 0; i <= position; i++) {
             if (i == position - 1) {
