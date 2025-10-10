@@ -1,6 +1,7 @@
 package lesson_05.implementation;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class TestArrayList implements MyList {
 
@@ -98,9 +99,26 @@ public class TestArrayList implements MyList {
     }
 
     @Override
+    public Iterator<Integer> iterator() {
+        return new Iterator<>() {
+            int position = 0;
+
+            @Override
+            public boolean hasNext() {
+                return position < size();
+            }
+
+            @Override
+            public Integer next() {
+                return array[position ++];
+            }
+        };
+    }
+
+    @Override
     public String toString() {
 
-        String string = "[";
+        String string = "["
 
         for (int i = 0; i <= position; i++) {
             if (i == position - 1) {
