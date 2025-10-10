@@ -19,7 +19,7 @@ public class Tester {
         Iterator<String> iterator = capitals.iterator();
 
         while (iterator.hasNext()) {
-            if (iterator.next().charAt(0) == 'B')
+            if (iterator.next().startsWith("B"))
                 iterator.remove();
         }
 
