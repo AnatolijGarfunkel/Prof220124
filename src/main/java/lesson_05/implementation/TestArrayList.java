@@ -117,7 +117,7 @@ public class TestArrayList implements MyList {
 
     @Override
     public Iterator<Integer> backward() {
-        return new Iterator<Integer>() {
+        return new Iterator<>() {
             int position = size();
             @Override
             public boolean hasNext() {
