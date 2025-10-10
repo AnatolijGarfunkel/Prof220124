@@ -112,6 +112,11 @@ public class TestArrayList implements MyList {
             public Integer next() {
                 return array[position ++];
             }
+
+            @Override
+            public void remove() {
+                TestArrayList.this.remove(-- position);
+            }
         };
     }
 
