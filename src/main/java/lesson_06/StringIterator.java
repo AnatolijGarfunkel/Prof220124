@@ -9,7 +9,7 @@ public class StringIterator implements Iterator<Character> {
     private int position = 0;
 
     public StringIterator(String string) {
-        chars = string.toCharArray();
+        this.chars = string.toCharArray();
     }
 
     @Override
