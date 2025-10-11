@@ -19,17 +19,12 @@ public class Tester {
                 )
         );
 
-        MyList myList = new TestArrayList(1, 3, -5, 7);
+        String test = "Berlin, Bonn";
 
-        Iterator<Integer> iterator = myList.iterator();
+        StringIterator iterator = new StringIterator(test);
 
-        while (iterator.hasNext()) {
-            Integer next = iterator.next();
-            if (next < 0)
-                iterator.remove();
-        }
-
-        System.out.println(myList);
+        while (iterator.hasNext())
+            System.out.printf(String.valueOf(iterator.next()));
 
     }
 }
