@@ -1,6 +1,7 @@
 package lesson_06;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Practice {
@@ -39,8 +40,11 @@ public class Practice {
     public static List<Address> getAddresses(List<Person> personList) {
         List<Address> result = new ArrayList<>();
 
-        for (Person data: personList) {
-            List<Address> list = data.getAddresses();
+        Iterator<Person> iterator = personList.iterator();
+
+        while (iterator.hasNext()) {
+            Person next = iterator.next();
+            List<Address> list = next.getAddresses();
             result.addAll(list);
         }
 
