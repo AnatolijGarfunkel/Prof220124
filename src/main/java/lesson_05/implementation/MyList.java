@@ -2,7 +2,7 @@ package lesson_05.implementation;
 
 import java.util.Iterator;
 
-public interface MyList {
+public interface MyList extends Iterable<Integer> {
 
     int size();
 
