@@ -137,6 +137,32 @@ public class TestArrayList implements MyList {
     }
 
     @Override
+    public Iterator<Integer> smallToBig() {
+        return new SmallToBigIterator();
+    }
+
+    private class SmallToBigIterator implements Iterator<Integer> {
+
+        private int [] data = new int[size()];
+        private int position = 0;
+
+        public SmallToBigIterator() {
+            System.arraycopy(array, 0, data, 0, size());
+            Arrays.sort(data);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return position < size();
+        }
+
+        @Override
+        public Integer next() {
+            return data[position ++];
+        }
+    }
+
+    @Override
     public String toString() {
 
         String string = "[";

@@ -21,4 +21,6 @@ public interface MyList extends Iterable<Integer> {
     Iterator<Integer> iterator();
 
     Iterator<Integer> backward();
+
+    Iterator<Integer> smallToBig();
 }
