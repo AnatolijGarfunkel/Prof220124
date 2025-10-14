@@ -70,7 +70,11 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public int get(int index) {
-        return 0;
+        Node node = getNodeByIndex(index);
+        if (node != null) {
+            return node.getValue();
+        }
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -86,7 +90,7 @@ public class MyLinkedListImpl implements MyLinkedList {
     private Node getNodeByIndex(int index) {
         if (index < size()) {
             Node node = head;
-            for (int i = 0; i <= index; i ++) {
+            for (int i = 0; i < index; i ++) {
                 node = node.getNextNode();
             }
             return node;
