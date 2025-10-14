@@ -85,6 +85,14 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public boolean contains(int value) {
+        Node node = head;
+
+        while (node != null) {
+            if (node.getValue() == value)
+                return true;
+            node = node.getNextNode();
+        }
+
         return false;
     }
 
