@@ -7,6 +7,8 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     private Node head;
 
+    private int size = 0;
+
     private static class Node {
 
         private int value;
@@ -38,12 +40,25 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public void add(int value) {
+        size ++;
+        Node newNode = new Node(value, null);
 
+        if (head == null) {
+            head = newNode;
+        }
+        else {
+            Node node = head;
+
+            while (node.getNextNode() != null) {
+                node = node.getNextNode();
+            }
+            node.setNextNode(newNode);
+        }
     }
 
     @Override
