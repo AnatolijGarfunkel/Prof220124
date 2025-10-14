@@ -9,23 +9,21 @@ public class Tester {
 
     public static void main(String[] args) {
 
-        List<String> capitals = new ArrayList<>(
-                Arrays.asList(
-                        "Bogota",
-                        "Buenos-Aires",
-                        "Santiago",
-                        "Berlin",
-                        "Paris"
-                )
-        );
+        int [] data = {5, 7, -2, 2, 9, - 5, 3};
 
-        String test = "Berlin, Bonn";
+        MyList myList = new TestArrayList(data);
 
-        StringIterator iterator = new StringIterator(test);
+        System.out.println(myList);
 
-        while (iterator.hasNext())
-            System.out.printf(String.valueOf(iterator.next()));
+        ListIterator<Integer> iterator = myList.listIterator();
 
+        while (iterator.hasNext()) {
+            Integer next = iterator.next();
+            if (next.equals(-2))
+                iterator.add(-100);
+        }
+
+        System.out.println(myList);
     }
 }
 

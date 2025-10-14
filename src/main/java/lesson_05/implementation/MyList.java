@@ -1,6 +1,7 @@
 package lesson_05.implementation;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 
 public interface MyList extends Iterable<Integer> {
 
@@ -21,4 +22,8 @@ public interface MyList extends Iterable<Integer> {
     Iterator<Integer> iterator();
 
     Iterator<Integer> backward();
+
+    Iterator<Integer> smallToBig();
+
+    ListIterator<Integer> listIterator();
 }

@@ -2,6 +2,7 @@ package lesson_05.implementation;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 public class TestArrayList implements MyList {
 
@@ -134,6 +135,86 @@ public class TestArrayList implements MyList {
                 return array[-- position];
             }
         };
+    }
+
+    @Override
+    public Iterator<Integer> smallToBig() {
+        return new SmallToBigIterator();
+    }
+
+    @Override
+    public ListIterator<Integer> listIterator() {
+        return new ListIterator<Integer>() {
+
+            int position = 0;
+
+            @Override
+            public boolean hasNext() {
+                return position < size();
+            }
+
+            @Override
+            public Integer next() {
+                return array[position ++];
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return position > 0;
+            }
+
+            @Override
+            public Integer previous() {
+                return array[position --];
+            }
+
+            @Override
+            public int nextIndex() {
+                return position + 1;
+            }
+
+            @Override
+            public int previousIndex() {
+                return position - 1;
+            }
+
+            @Override
+            public void remove() {
+                TestArrayList.this.remove(-- position);
+            }
+
+            @Override
+            public void set(Integer integer) {
+                TestArrayList.this.set(position - 1, integer);
+
+            }
+
+            @Override
+            public void add(Integer integer) {
+                TestArrayList.this.add(position, integer);
+            }
+        };
+    }
+
+    private class SmallToBigIterator implements Iterator<Integer> {
+
+        private int [] data = new int[size()];
+        private int position = 0;
+
+        public SmallToBigIterator() {
+            System.arraycopy(array, 0, data, 0, size());
+            Arrays.sort(data);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return position < size();
+        }
+
+        @Override
+        public Integer next() {
+            return data[position ++];
+        }
     }
 
     @Override
