@@ -97,12 +97,10 @@ public class MyLinkedListImpl implements MyLinkedList {
         Node node = head;
 
         while (node != null) {
-            if (node.getNextNode() == null) {
-                s += node.getValue();
-                break;
-            }
-            s += node.getValue() + ", ";
+            s += node.getValue();
             node = node.getNextNode();
+            if (node != null)
+                s += ", ";
         }
 
         s += "]";
