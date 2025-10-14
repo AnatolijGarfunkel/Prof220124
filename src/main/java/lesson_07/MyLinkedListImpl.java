@@ -1,0 +1,158 @@
+package lesson_07;
+
+import java.util.Iterator;
+import java.util.ListIterator;
+
+public class MyLinkedListImpl implements MyLinkedList {
+
+    private Node head;
+
+    private static class Node {
+
+        private int value;
+
+        private Node nextNode;
+
+        public Node(int value, Node nextNode) {
+            this.value = value;
+            this.nextNode = nextNode;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        public Node getNextNode() {
+            return nextNode;
+        }
+
+        public void setNextNode(Node nextNode) {
+            this.nextNode = nextNode;
+        }
+    }
+
+
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public void add(int value) {
+
+    }
+
+    @Override
+    public void add(int index, int value) {
+
+    }
+
+    @Override
+    public int get(int index) {
+        return 0;
+    }
+
+    @Override
+    public void remove(int index) {
+
+    }
+
+    @Override
+    public void set(int index, int value) {
+
+    }
+
+    @Override
+    public boolean contains(int value) {
+        return false;
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return null;
+    }
+
+    @Override
+    public Iterator<Integer> backward() {
+        return null;
+    }
+
+    @Override
+    public Iterator<Integer> smallToBig() {
+        return null;
+    }
+
+    @Override
+    public ListIterator<Integer> listIterator() {
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        String s = "[";
+        Node node = head;
+
+        while (node != null) {
+            if (node.getNextNode() == null) {
+                s += node.getValue();
+                break;
+            }
+            s += node.getValue() + ", ";
+            node = node.getNextNode();
+        }
+
+        s += "]";
+        return s;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
