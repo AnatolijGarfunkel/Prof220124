@@ -84,7 +84,12 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public void set(int index, int value) {
-
+        Node node = getNodeByIndex(index);
+        if (node != null) {
+            node.setValue(value);
+            return;
+        }
+        System.out.println("Index passt nicht!");
     }
 
     private Node getNodeByIndex(int index) {
