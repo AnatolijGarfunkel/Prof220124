@@ -83,6 +83,17 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     }
 
+    private Node getNodeByIndex(int index) {
+        if (index < size()) {
+            Node node = head;
+            for (int i = 0; i <= index; i ++) {
+                node = node.getNextNode();
+            }
+            return node;
+        }
+        return null;
+    }
+
     @Override
     public boolean contains(int value) {
         Node node = head;
