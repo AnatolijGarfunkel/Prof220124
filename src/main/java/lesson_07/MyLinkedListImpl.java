@@ -140,7 +140,22 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public Iterator<Integer> iterator() {
-        return null;
+        return new Iterator<Integer>() {
+
+            Node node = head;
+
+            @Override
+            public boolean hasNext() {
+                return node != null;
+            }
+
+            @Override
+            public Integer next() {
+                int value = node.getValue();
+                node = node.getNextNode();
+                return value;
+            }
+        };
     }
 
     @Override
