@@ -139,6 +139,24 @@ public class MyLinkedListImpl implements MyLinkedList {
     }
 
     @Override
+    public void addFirst(int value) {
+        add(0, value);
+    }
+
+    @Override
+    public int getFirst() {
+        int value = get(0);
+        return value;
+    }
+
+    @Override
+    public int removeFirst() {
+        int value = get(0);
+        remove(0);
+        return value;
+    }
+
+    @Override
     public Iterator<Integer> iterator() {
         return new Iterator<Integer>() {
 
