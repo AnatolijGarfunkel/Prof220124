@@ -47,13 +47,12 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public void add(int value) {
-        size ++;
+        size++;
         Node newNode = new Node(value, null);
 
         if (head == null) {
             head = newNode;
-        }
-        else {
+        } else {
             Node node = head;
 
             while (node.getNextNode() != null) {
@@ -67,7 +66,7 @@ public class MyLinkedListImpl implements MyLinkedList {
     public void add(int index, int value) {
         Node node = getNodeByIndex(index);
         if (node != null) {
-            size ++;
+            size++;
             int oldValue = node.getValue();
             Node nextNode = node.getNextNode();
             Node newNode = new Node(oldValue, nextNode);
@@ -89,7 +88,20 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public void remove(int index) {
-
+        if (index == 0) {
+            head = head.getNextNode();
+            size--;
+            return;
+        }
+        if (index >= 0 && index < size()) {
+            Node node = getNodeByIndex(index - 1);
+            if (node != null) {
+                node.setNextNode(node.getNextNode().getNextNode());
+                size--;
+                return;
+            }
+        }
+        System.out.println("Index passt nicht!");
     }
 
     @Override
@@ -105,7 +117,7 @@ public class MyLinkedListImpl implements MyLinkedList {
     private Node getNodeByIndex(int index) {
         if (index < size() && index >= 0) {
             Node node = head;
-            for (int i = 0; i < index; i ++) {
+            for (int i = 0; i < index; i++) {
                 node = node.getNextNode();
             }
             return node;
