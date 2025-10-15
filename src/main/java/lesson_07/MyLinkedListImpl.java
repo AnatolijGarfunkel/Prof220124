@@ -65,7 +65,16 @@ public class MyLinkedListImpl implements MyLinkedList {
 
     @Override
     public void add(int index, int value) {
-
+        Node node = getNodeByIndex(index);
+        if (node != null) {
+            int oldValue = node.getValue();
+            Node nextNode = node.getNextNode();
+            Node newNode = new Node(oldValue, nextNode);
+            node.setNextNode(newNode);
+            node.setValue(value);
+            return;
+        }
+        System.out.println("index passt nicht!");
     }
 
     @Override
@@ -93,7 +102,7 @@ public class MyLinkedListImpl implements MyLinkedList {
     }
 
     private Node getNodeByIndex(int index) {
-        if (index < size()) {
+        if (index < size() && index >= 0) {
             Node node = head;
             for (int i = 0; i < index; i ++) {
                 node = node.getNextNode();
