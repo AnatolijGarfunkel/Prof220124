@@ -1,6 +1,7 @@
 package lesson_09;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Queue;
 
 public class ReversePolish {
@@ -14,30 +15,25 @@ public class ReversePolish {
     }
 
     public static int reversePolishCalculator(String toCalculate) {
-        char[] chars = toCalculate.toCharArray();
-        Queue<Character> calc = new ArrayDeque<>();
+        String[] chars = toCalculate.split(" ");
+        Queue<String> calc = new ArrayDeque<>(Arrays.asList(chars));
 
-        for (Character data: chars) {
-            if (!data.equals(' '))
-                calc.add(data);
-        }
-
-        int first = Character.getNumericValue(calc.remove());
+        int first = Integer.parseInt(calc.remove());
 
         while (!calc.isEmpty()) {
-            int second = Character.getNumericValue(calc.remove());
-            char operand = calc.remove();
+            int second = Integer.parseInt(calc.remove());
+            String operand = calc.remove();
             switch (operand) {
-                case '+':
+                case "+":
                     first += second;
                     break;
-                case '-':
+                case "-":
                     first -= second;
                     break;
-                case '*':
+                case "*":
                     first *= second;
                     break;
-                case '/':
+                case "/":
                     first /= second;
                     break;
             }
