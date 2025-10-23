@@ -5,66 +5,41 @@ import java.util.*;
 public class BalancedParentheses {
 
     public static void main(String[] args) {
-        String s = "}{";
-        boolean balanced = isBalanced(s);
-        System.out.println("Is balanced: " + balanced);
+        List<String> s = List.of(
+                "{}[]",
+                "{[]()}",
+                "[}",
+                "{{{)}]",
+                "{()()[[()]()]}",
+                "}{"
+        );
+
+        for (String data : s)
+            System.out.println(data + ": " + isBalanced(data));
     }
 
     public static boolean isBalanced(String s) {
-        if (s.length() % 2 != 0)
-            return false;
+        Stack<Character> chars = new Stack<>();
+        List<Character> symbols = List.of('{', '[', '(');
 
-        List<Character> right = List.of('}', ']', ')');
-
-        Stack<Character> stack = new Stack<>();
-        char[] arr = s.toCharArray();
-        List<Character> chars = new LinkedList<>();
-
-        for (Character data : arr) {
-            chars.add(data);
-        }
-
-        stack.push(chars.getFirst());
-        chars.removeFirst();
-        Character peek = stack.peek();
-
-        if (right.contains(peek))
-            return false;
-
-        for (Character data : chars) {
-            stack.push(data);
-
-
-            switch (peek) {
-                case '{':
-                    if (stack.peek().equals('}')) {
-                        stack.pop();
-                        stack.pop();
-                    }
-                    if (!stack.empty() && (stack.peek().equals(']') || stack.peek().equals(')')))
-                        return false;
-                    break;
-                case '[':
-                    if (stack.peek().equals(']')) {
-                        stack.pop();
-                        stack.pop();
-                    }
-                    if (!stack.empty() && (stack.peek().equals('}') || stack.peek().equals(')')))
-                        return false;
-                    break;
-                case '(':
-                    if (stack.peek().equals(')')) {
-                        stack.pop();
-                        stack.pop();
-                    }
-                    if (!stack.empty() && (stack.peek().equals(']') || stack.peek().equals('}')))
-                        return false;
-                    break;
+        for (char data : s.toCharArray()) {
+            if (symbols.contains(data)) {
+                chars.push(data);
+            } else if (
+                    (!chars.isEmpty()) &&
+                            (
+                                    (data == '}' && chars.peek() == '{')
+                                            ||
+                                    (data == ']' && chars.peek() == '[')
+                                            ||
+                                    (data == ')' && chars.peek() == '(')
+                            )
+            ) {
+                chars.pop();
             }
-            stack.push(data);
-            peek = stack.peek();
         }
-        return true;
+
+        return chars.isEmpty();
     }
 }
 
