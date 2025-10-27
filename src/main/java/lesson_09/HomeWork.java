@@ -8,8 +8,8 @@ public class HomeWork {
 
         String string = "один раз это один раз но только раз";
 
-        Map<String, List<Integer>> map = vorhanden(string);
-        System.out.println(map);
+        List<Word> words = getWordPos(string);
+        System.out.println(words);
     }
 
     public static Set<Character> unique(String word) {
@@ -40,5 +40,26 @@ public class HomeWork {
             map.put(data, count);
         }
         return map;
+    }
+
+    public static List<Word> getWordPos(String string) {
+        List<Word> wordsList = new LinkedList<>();
+        List<String> list = List.of(string.split(" "));
+        Set<String> set = new LinkedHashSet<>(list);
+
+        for (String data: set) {
+            Word word = new Word(data);
+            List<Integer> position = new LinkedList<>();
+
+            for (int i = 0; i < list.size(); i ++) {
+                if (data.equals(list.get(i)))
+                    position.add(i);
+            }
+
+            word.setPosition(position);
+            wordsList.add(word);
+        }
+
+        return wordsList;
     }
 }
