@@ -7,26 +7,14 @@ public class Word {
 
     private String word;
 
-    private List<Integer> positiion;
+    private List<Integer> position;
 
     public Word(String word) {
         this.word = word;
     }
 
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public List<Integer> getPositiion() {
-        return positiion;
-    }
-
-    public void setPositiion(List<Integer> positiion) {
-        this.positiion = positiion;
+    public void setPosition(List<Integer> position) {
+        this.position = position;
     }
 
     @Override
@@ -39,5 +27,11 @@ public class Word {
     @Override
     public int hashCode() {
         return Objects.hashCode(word);
+    }
+
+    @Override
+    public String toString() {
+        String position = this.position.toString();
+        return word + ":" + position;
     }
 }
