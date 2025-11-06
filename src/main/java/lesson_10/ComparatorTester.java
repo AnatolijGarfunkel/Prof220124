@@ -26,5 +26,14 @@ public class ComparatorTester {
                         new Cat("Zack", 2)
                 )
         );
+
+        Comparator<Cat> ageNameComparator = (o1, o2) -> {
+            int age = o1.getAge() - o2.getAge();
+            int name = o1.getName().compareTo(o2.getName());
+            return age == 0 ? name : age;
+        };
+
+        cats.sort(ageNameComparator);
+        System.out.println(cats);
     }
 }
