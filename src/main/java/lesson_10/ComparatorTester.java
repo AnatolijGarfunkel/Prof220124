@@ -21,14 +21,10 @@ public class ComparatorTester {
                         new Cat("Amir", 3),
                         new Cat("Murzik", 2),
                         new Cat("Pushok", 4),
-                        new Cat("Junior", 1)
+                        new Cat("Junior", 1),
+                        new Cat("Alex", 2),
+                        new Cat("Zack", 2)
                 )
         );
-
-        System.out.println(cats);
-
-        cats.sort(Comparator.comparingInt(Cat::getAge));
-
-        System.out.println(cats);
     }
 }
