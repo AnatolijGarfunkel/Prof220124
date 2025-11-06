@@ -9,9 +9,10 @@ public class MapTester {
         Map<String, String> capitals = new HashMap<>();
         capitals.put("Germany", "Berlin");
         capitals.put("France", "Paris");
+        capitals.put("UK", "London");
         System.out.println(capitals);
 
-        
+
     }
 }
 
