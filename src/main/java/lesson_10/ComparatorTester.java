@@ -26,5 +26,9 @@ public class ComparatorTester {
         );
 
         System.out.println(cats);
+
+        cats.sort(Comparator.comparingInt(Cat::getAge));
+
+        System.out.println(cats);
     }
 }
