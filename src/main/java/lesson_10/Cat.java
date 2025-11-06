@@ -56,4 +56,9 @@ public class Cat {
     public int hashCode() {
         return Objects.hash(name, age);
     }
+
+    @Override
+    public String toString() {
+        return "C{" + name + ", " + age + "}";
+    }
 }
