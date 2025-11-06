@@ -16,7 +16,7 @@ public class ComparatorTester {
         groups.sort(Comparator.comparingInt(String::length));
         System.out.println(groups);
 
-        List<Cat> cats = new ArrayList<>(
+        ArrayList<Cat> cats = new ArrayList<>(
                 Arrays.asList(
                         new Cat("Amir", 3),
                         new Cat("Murzik", 2),
@@ -39,5 +39,60 @@ public class ComparatorTester {
         cats.sort(Comparator.comparingInt(Cat::getAge).reversed().thenComparing(Comparator.comparing(Cat::getName).reversed()));
 
         System.out.println(cats);
+
+        Set<Cat> catTreeSet = new TreeSet<>(
+                Comparator.comparingInt(Cat::getAge)
+        );
+
+        catTreeSet.addAll(cats);
+
+        System.out.println(catTreeSet);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
