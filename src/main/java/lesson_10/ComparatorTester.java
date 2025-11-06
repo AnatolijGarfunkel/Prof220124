@@ -15,5 +15,16 @@ public class ComparatorTester {
         System.out.println(groups);
         groups.sort((o1, o2) -> o1.length() - o2.length());
         System.out.println(groups);
+
+        List<Cat> cats = new ArrayList<>(
+                Arrays.asList(
+                        new Cat("Amir", 3),
+                        new Cat("Murzik", 2),
+                        new Cat("Pushok", 4),
+                        new Cat("Junior", 1)
+                )
+        );
+
+        System.out.println(cats);
     }
 }
