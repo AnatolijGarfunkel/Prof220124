@@ -13,7 +13,7 @@ public class ComparatorTester {
         );
 
         System.out.println(groups);
-        groups.sort((o1, o2) -> o1.length() - o2.length());
+        groups.sort(Comparator.comparingInt(String::length));
         System.out.println(groups);
 
         List<Cat> cats = new ArrayList<>(
@@ -34,6 +34,10 @@ public class ComparatorTester {
         };
 
         cats.sort(ageNameComparator);
+        System.out.println(cats);
+
+        cats.sort(Comparator.comparingInt(Cat::getAge).reversed().thenComparing(Comparator.comparing(Cat::getName).reversed()));
+
         System.out.println(cats);
     }
 }
