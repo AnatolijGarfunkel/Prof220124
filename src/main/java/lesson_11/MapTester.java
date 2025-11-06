@@ -24,6 +24,28 @@ public class MapTester {
         }
 
         System.out.println(townLength);
+
+        System.out.println("\nentrySet");
+        for (Map.Entry<String, String> pair : capitals.entrySet()) {
+            System.out.println(pair.getKey() + " : " + pair.getValue());
+        }
+
+        Map<Integer, String> fruits = new HashMap<>(
+                Map.of(
+                        89, "Banana",
+                        67, "Grapes",
+                        52, "Apple",
+                        41, "Kiwi",
+                        100, "Pear"
+                )
+        );
+
+        fruits.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey() > 50)
+                .forEach(entry -> System.out.println(entry.getKey() + " : " + entry.getValue()));
+
+        
     }
 }
 
