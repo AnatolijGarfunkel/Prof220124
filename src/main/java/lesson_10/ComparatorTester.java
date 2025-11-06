@@ -1,0 +1,98 @@
+package lesson_10;
+
+import java.util.*;
+
+public class ComparatorTester {
+
+    public static void main(String[] args) {
+
+        List<String> groups = new ArrayList<>(
+                Arrays.asList(
+                        "Ramones", "Aerosmith", "Rolling Stones", "Beatles", "Roxette", "INXS"
+                )
+        );
+
+        System.out.println(groups);
+        groups.sort(Comparator.comparingInt(String::length));
+        System.out.println(groups);
+
+        ArrayList<Cat> cats = new ArrayList<>(
+                Arrays.asList(
+                        new Cat("Amir", 3),
+                        new Cat("Murzik", 2),
+                        new Cat("Pushok", 4),
+                        new Cat("Junior", 1),
+                        new Cat("Alex", 2),
+                        new Cat("Zack", 2)
+                )
+        );
+
+        Comparator<Cat> ageNameComparator = (o1, o2) -> {
+            int age = o1.getAge() - o2.getAge();
+            int name = o1.getName().compareTo(o2.getName());
+            return age == 0 ? name : age;
+        };
+
+        cats.sort(ageNameComparator);
+        System.out.println(cats);
+
+        cats.sort(Comparator.comparingInt(Cat::getAge).reversed().thenComparing(Comparator.comparing(Cat::getName).reversed()));
+
+        System.out.println(cats);
+
+        Set<Cat> catTreeSet = new TreeSet<>(
+                Comparator.comparingInt(Cat::getAge)
+        );
+
+        catTreeSet.addAll(cats);
+
+        System.out.println(catTreeSet);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
