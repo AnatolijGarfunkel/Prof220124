@@ -12,7 +12,18 @@ public class MapTester {
         capitals.put("UK", "London");
         System.out.println(capitals);
 
+        String country = "Estonia";
+        String capital = "Tallinn";
+        boolean estonia = capitals.containsKey(country);
+        boolean tallinn = capitals.containsValue(capital);
 
+        Map<String, Integer> townLength = new HashMap<>();
+
+        for (String data : capitals.keySet()) {
+            townLength.put(data, capitals.get(data).length());
+        }
+
+        System.out.println(townLength);
     }
 }
 
