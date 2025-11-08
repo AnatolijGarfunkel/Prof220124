@@ -63,6 +63,26 @@ public class MapTester {
 
         System.out.println("\ncollect:");
         System.out.println(collect);
+
+        String s = "один раз это один раз но только один раз";
+        Map<String, Integer> result = count(s);
+        System.out.println("\nresult");
+        System.out.println(result);
+
+    }
+
+    public static Map<String, Integer> count(String s) {
+        Map<String, Integer> result = new HashMap<>();
+        String[] strings = s.split(" ");
+
+        for (String data : strings) {
+            int count = 0;
+            if (result.containsKey(data))
+                count = result.get(data);
+            result.put(data, ++count);
+        }
+
+        return result;
     }
 }
 
