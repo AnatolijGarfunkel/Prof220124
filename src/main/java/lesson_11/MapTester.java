@@ -1,9 +1,6 @@
 package lesson_11;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -69,6 +66,11 @@ public class MapTester {
         System.out.println("\nresult");
         System.out.println(result);
 
+        String sentence = "hello how exactly was his eye";
+
+        Map<Character, List<String>> map = firstLetterToList(sentence);
+        System.out.println("\nfirstLetterToList");
+        System.out.println(map);
     }
 
     public static Map<String, Integer> count(String s) {
@@ -80,6 +82,22 @@ public class MapTester {
             if (result.containsKey(data))
                 count = result.get(data);
             result.put(data, ++count);
+        }
+
+        return result;
+    }
+
+    public static Map<Character, List<String>> firstLetterToList(String sentence) {
+        Map<Character, List<String>> result = new HashMap<>();
+        String[] strings = sentence.split(" ");
+
+        for (String data : strings) {
+            char charAt = data.charAt(0);
+            List<String> list = result.get(charAt);
+            if (list == null)
+                list = new ArrayList<>();
+            list.add(data);
+            result.put(charAt, list);
         }
 
         return result;
