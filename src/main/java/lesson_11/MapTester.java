@@ -1,7 +1,12 @@
 package lesson_11;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 public class MapTester {
 
@@ -45,7 +50,19 @@ public class MapTester {
                 .filter(entry -> entry.getKey() > 50)
                 .forEach(entry -> System.out.println(entry.getKey() + " : " + entry.getValue()));
 
-        
+        Map<Integer, String> collect = fruits.entrySet()
+                .stream()
+                .sorted(Comparator.comparingInt(Map.Entry::getKey))
+                .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue,
+                                (e1, e2) -> e1,
+                                LinkedHashMap::new
+                        )
+                );
+
+        System.out.println("\ncollect:");
+        System.out.println(collect);
     }
 }
 
