@@ -17,7 +17,20 @@ public class MyHashMap implements MyMap {
 
     @Override
     public void put(String k, String v) {
-
+        Pair pair = findPair(k);
+        if (pair == null) {
+            int bucket = findBucket(k);
+            if (source[bucket] == null) {
+                pair = new Pair(k, v, null);
+                source[bucket] = pair;
+            }
+            else {
+                pair = source[bucket];
+                while (pair.getNext() != null)
+                    pair = pair.getNext();
+                pair.setNext(new Pair(k, v, null));
+            }
+        }
     }
 
     @Override
@@ -56,6 +69,28 @@ public class MyHashMap implements MyMap {
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        String result = "{\n\t";
+        for (int i = 0; i < source.length; i ++) {
+            if (source[i] != null) {
+                Pair pair = source[i];
+                while (pair != null) {
+                    result += "[" + i + "]";
+                    if (pair.getNext() == null && i < source.length - 1)
+                        result += "[" + pair.getKey() + " : " + pair.getValue() + "]\n\t";
+                    else if (pair.getNext() == null && i == source.length - 1)
+                        result += "[" + pair.getKey() + " : " + pair.getValue() + "]\n";
+                    else
+                        result += "[" + pair.getKey() + " : " + pair.getValue() + "], ";
+                    pair = pair.getNext();
+                }
+            }
+        }
+        result += "}";
+        return result;
     }
 }
 
