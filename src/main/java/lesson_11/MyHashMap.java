@@ -22,7 +22,8 @@ public class MyHashMap implements MyMap {
 
     @Override
     public String get(String k) {
-        return "";
+        Pair pair = findPair(k);
+        return pair != null ? pair.getValue() : null;
     }
 
     @Override
