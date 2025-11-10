@@ -1,6 +1,6 @@
 package lesson_11;
 
-public class MyHashMap implements MyMap{
+public class MyHashMap implements MyMap {
 
     private int size = 0;
 
@@ -32,18 +32,24 @@ public class MyHashMap implements MyMap{
 
     @Override
     public boolean contains(String k) {
-        return findPair(k);
+        return findPair(k) != null;
     }
 
-    private boolean findPair(String k) {
+    private Pair findPair(String k) {
         int bucket = findBucket(k);
-        return false;
+        Pair pair = source[bucket];
+        while (pair != null) {
+            if (pair.getKey().equals(k))
+                return pair;
+            pair = pair.getNext();
+        }
+        return null;
     }
 
     private int findBucket(String k) {
         int hashCode = k.hashCode();
         int bucket = hashCode % capacity();
-        return bucket;
+        return Math.abs(bucket);
     }
 
     @Override
