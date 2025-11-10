@@ -32,11 +32,69 @@ public class MyHashMap implements MyMap{
 
     @Override
     public boolean contains(String k) {
+        return findPair(k);
+    }
+
+    private boolean findPair(String k) {
+        int bucket = findBucket(k);
         return false;
+    }
+
+    private int findBucket(String k) {
+        int hashCode = k.hashCode();
+        int bucket = hashCode % capacity();
+        return bucket;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
