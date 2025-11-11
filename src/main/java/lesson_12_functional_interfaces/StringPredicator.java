@@ -8,4 +8,14 @@ public interface StringPredicator {
     default StringPredicator and(StringPredicator other) {
         return text -> StringPredicator.this.test(text) && other.test(text);
     }
+
+    default StringPredicator or(StringPredicator other) {
+        return text -> this.test(text) || other.test(text);
+    }
+
+    default StringPredicator negate() {
+        return text -> !this.test(text);
+    }
+
+
 }
