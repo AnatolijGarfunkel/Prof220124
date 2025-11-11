@@ -6,4 +6,22 @@ import java.util.Optional;
 public interface FieldValidator {
 
     Optional<String> validate(String value);
+
+    default FieldValidator and(FieldValidator other) {
+        return value -> {
+            Optional<String> thisOptional = this.validate(value);
+            if (thisOptional.isPresent())
+                return thisOptional;
+            return other.validate(value);
+        };
+    }
+
+    default FieldValidator or(FieldValidator other) {
+        return new FieldValidator() {
+            @Override
+            public Optional<String> validate(String value) {
+                return Optional.empty();
+            }
+        };
+    }
 }
