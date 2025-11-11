@@ -17,11 +17,10 @@ public interface FieldValidator {
     }
 
     default FieldValidator or(FieldValidator other) {
-        return new FieldValidator() {
-            @Override
-            public Optional<String> validate(String value) {
+        return value -> {
+            if (FieldValidator.this.validate(value).isEmpty() || other.validate(value).isEmpty())
                 return Optional.empty();
-            }
+            return Optional.of("Fehler");
         };
     }
 }
