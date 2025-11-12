@@ -5,12 +5,6 @@ import java.util.*;
 public class FieldValidatorTester {
 
     public static void main(String[] args) {
-        Map<String, String> data = new HashMap<>(
-                Map.of(
-                        "name", "marcus3",
-                        "email", "marcusgmx.de",
-                        "password", "marus")
-        );
         Map<String, List<FieldValidator>> rules = new HashMap<>();
 
         FieldValidator notNull = text -> text == null ? Optional.of("Fehler - ist Null") : Optional.empty();
@@ -73,6 +67,13 @@ public class FieldValidatorTester {
                 )
         );
 
+        Map<String, String> data = new HashMap<>(
+                Map.of(
+                        "name", "Marcus",
+                        "email", "marcus@gmx.de",
+                        "password", "marus23")
+        );
+
         Map<String, List<String>> validated = validateAllFields(data, valueRules);
         System.out.println(validated);
 
@@ -91,9 +92,9 @@ public class FieldValidatorTester {
 
         for (FieldValidator validator : validators) {
             Optional<String> optional = validator.validate(value);
-            if (optional.isPresent())
-                errors.add(String.valueOf(optional));
+            optional.ifPresent(errors::add);
         }
+        
         return errors;
     }
 
@@ -102,14 +103,15 @@ public class FieldValidatorTester {
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
+            String value = pair.getValue();
             List<FieldValidator> validators = rules.get(key);
             List<String> entries = new ArrayList<>();;
+
             for (FieldValidator validator : validators) {
-                String value = pair.getValue();
                 Optional<String> optional = validator.validate(value);
-                if (optional.isPresent())
-                    entries.add(String.valueOf(optional));
+                optional.ifPresent(entries::add);
             }
+
             log.put(key, entries);
         }
         return log;
