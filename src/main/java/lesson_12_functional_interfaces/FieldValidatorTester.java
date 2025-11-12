@@ -94,7 +94,7 @@ public class FieldValidatorTester {
             Optional<String> optional = validator.validate(value);
             optional.ifPresent(errors::add);
         }
-        
+
         return errors;
     }
 
@@ -118,8 +118,23 @@ public class FieldValidatorTester {
     }
 
     public static Map<String, Optional<String>> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
+        Map<String, Optional<String>> log = new HashMap<>();
 
-        return null;
+        for (Map.Entry<String, String> pair : data.entrySet()) {
+            String key = pair.getKey();
+            String value = pair.getValue();
+            List<FieldValidator> validators = rules.get(key);
+
+            for (FieldValidator validator : validators) {
+                Optional<String> optional = validator.validate(value);
+                if (optional.isPresent()) {
+                    log.put(key, optional);
+                    break;
+                }
+            }
+        }
+
+        return log;
     }
 
     public static boolean isFormValid(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
