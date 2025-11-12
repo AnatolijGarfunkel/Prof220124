@@ -7,39 +7,39 @@ public class FieldValidatorTester {
     public static void main(String[] args) {
         Map<String, String> data = new HashMap<>(
                 Map.of(
-                        "name", "mar",
+                        "name", "mar33",
                         "email", "marcusgmx.de",
-                        "password", "marus89")
+                        "password", "marus")
         );
         Map<String, List<FieldValidator>> rules = new HashMap<>();
 
-        FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("darf nicht leer sein");
+        FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.of("OK - nicht leer") : Optional.of("Fehler - darf nicht leer sein");
         FieldValidator minLength = minLengthN(5);
         FieldValidator maxLength = maxLengthN(10);
-        FieldValidator containsAtSign = email -> email.contains("@") ? Optional.empty() : Optional.of("enthält kein @ Zeichen");
-        FieldValidator notContainsDotAfterAt = email -> email.contains("@.") ? Optional.empty() : Optional.of("nach \"@\" existiert ein \".\"");
+        FieldValidator containsAtSign = email -> email.contains("@") ? Optional.of("OK - hat \"@\" Zeichen") : Optional.of("Fehler - enthält kein @ Zeichen");
+        FieldValidator containsDotAfterAt = email -> email.contains("@.") ? Optional.of("Fehler - nach \"@\" existiert ein \".\"") : Optional.of("OK - kein \".\" nach \"@\" Zeichen");
         FieldValidator hasDigit = value -> {
             char[] chars = value.toCharArray();
             for (char c : chars) {
                 if (Character.isDigit(c))
-                    return Optional.empty();
+                    return Optional.of("OK - enthält Ziffer");
             }
-            return Optional.of("enthält keine Ziffern");
+            return Optional.of("Fehler - enthält keine Ziffer");
         };
         FieldValidator hasUppercase = pass -> {
             char[] chars = pass.toCharArray();
             for (char c : chars)
                 if (Character.isUpperCase(c))
-                    return Optional.empty();
-            return Optional.of("erste Buchstabe im unteren Register");
+                    return Optional.of("OK - Buchstaben im oberen Register");
+            return Optional.of("Fehler - keine Buchstaben im oberen Register");
         };
-        FieldValidator notStartsWithUppercase = name -> !Character.isUpperCase(name.charAt(0)) ? Optional.empty() : Optional.of("fängt klein an");
+        FieldValidator startsWithUppercase = name -> !Character.isUpperCase(name.charAt(0)) ? Optional.of("OK - beginnt mit einem Großbuchstaben") : Optional.of("Fehler - fängt klein an");
         FieldValidator lettersOnly = name -> {
             char[] chars = name.toCharArray();
             for (char c : chars)
                 if (Character.isDigit(c))
-                    return Optional.of("enthält Ziffern");
-            return Optional.empty();
+                    return Optional.of("Fehler - enthält Ziffern");
+            return Optional.of("OK - keine Ziffern");
         };
 
         List<FieldValidator> nameRules = List.of(
@@ -52,7 +52,7 @@ public class FieldValidatorTester {
         List<FieldValidator> emailRules = List.of(
                 notEmpty,
                 containsAtSign,
-                notContainsDotAfterAt
+                containsDotAfterAt
         );
 
         List<FieldValidator> passRules = List.of(
@@ -74,11 +74,11 @@ public class FieldValidatorTester {
     }
 
     private static FieldValidator maxLengthN(int max) {
-        return text -> text.length() <= max ? Optional.empty() : Optional.of("max. " + max + " Zeichen");
+        return text -> text.length() <= max ? Optional.of("OK - Länge unter " + max) : Optional.of("Fehler - max. " + max + " Zeichen");
     }
 
     private static FieldValidator minLengthN(int min) {
-        return text -> text.length() >= min ? Optional.empty() : Optional.of("mind. " + min + " Zeichen");
+        return text -> text.length() >= min ? Optional.of("OK - Länge über " + min) : Optional.of("Fehler - mind. " + min + " Zeichen");
     }
 
     public static List<String> validateField(String value, List<FieldValidator> validators) {
@@ -137,7 +137,6 @@ public class FieldValidatorTester {
                     entries = null;
             }
         }
-
         return log;
     }
 
