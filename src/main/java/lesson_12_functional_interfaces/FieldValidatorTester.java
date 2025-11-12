@@ -166,6 +166,53 @@ public class FieldValidatorTester {
     }
 
     public static FieldValidator nullSafe(FieldValidator original, String messageOnNull) {
-        return null;
+        return value -> value == null ? Optional.of(messageOnNull) : original.validate(value);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
