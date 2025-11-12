@@ -155,8 +155,14 @@ public class FieldValidatorTester {
     }
 
     public static FieldValidator combine(List<FieldValidator> validators) {
-
-        return null;
+        return value -> {
+            for (FieldValidator validator : validators) {
+                Optional<String> result = validator.validate(value);
+                if (result.isPresent())
+                    return result;
+            }
+            return Optional.empty();
+        };
     }
 
     public static FieldValidator nullSafe(FieldValidator original, String messageOnNull) {
