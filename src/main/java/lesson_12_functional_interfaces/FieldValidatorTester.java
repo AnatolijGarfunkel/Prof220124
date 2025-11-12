@@ -139,7 +139,19 @@ public class FieldValidatorTester {
 
     public static boolean isFormValid(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
 
-        return false;
+        for (Map.Entry<String, String> pair : data.entrySet()) {
+            String key = pair.getKey();
+            String value = pair.getValue();
+            List<FieldValidator> validators = rules.get(key);
+
+            for (FieldValidator validator : validators) {
+                Optional<String> result = validator.validate(value);
+                if (result.isPresent())
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     public static FieldValidator combine(List<FieldValidator> validators) {
