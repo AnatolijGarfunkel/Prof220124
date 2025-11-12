@@ -97,45 +97,14 @@ public class FieldValidatorTester {
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
-            List<FieldValidator> validators;
-            List<String> entries;
-            switch (key) {
-                case "name":
-                    validators = rules.get("name");
-                    entries = new ArrayList<>();
-                    for (FieldValidator validator : validators) {
-                        String value = pair.getValue();
-                        Optional<String> optional = validator.validate(value);
-                        entries.add(String.valueOf(optional));
-                    }
-                    log.put(key, entries);
-                    validators = null;
-                    entries = null;
-                    break;
-                case "email":
-                    validators = rules.get("email");
-                    entries = new ArrayList<>();
-                    for (FieldValidator validator : validators) {
-                        String value = pair.getValue();
-                        Optional<String> optional = validator.validate(value);
-                        entries.add(String.valueOf(optional));
-                    }
-                    log.put(key, entries);
-                    validators = null;
-                    entries = null;
-                    break;
-                case "password":
-                    validators = rules.get("password");
-                    entries = new ArrayList<>();
-                    for (FieldValidator validator : validators) {
-                        String value = pair.getValue();
-                        Optional<String> optional = validator.validate(value);
-                        entries.add(String.valueOf(optional));
-                    }
-                    log.put(key, entries);
-                    validators = null;
-                    entries = null;
+            List<FieldValidator> validators = rules.get(key);
+            List<String> entries = new ArrayList<>();;
+            for (FieldValidator validator : validators) {
+                String value = pair.getValue();
+                Optional<String> optional = validator.validate(value);
+                entries.add(String.valueOf(optional));
             }
+            log.put(key, entries);
         }
         return log;
     }
