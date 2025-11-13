@@ -4,63 +4,70 @@ import java.util.*;
 
 public class FieldValidatorTester {
 
+    static final String ERR_VALIDATORS_NULL = "Validator-Liste ist null";
+    static final String ERR_VALIDATORS_EMPTY = "Validator-Liste ist empty";
+    static final String ERR_VALIDATOR_NULL  = "Validator ist null";
+    static final String ERR_FIELD_NULL      = "Feld ist null";
+    record PrecheckResult(boolean valid, List<String> messages) {}
+
+
     public static void main(String[] args) {
-        Map<String, String> data = new HashMap<>(
-                Map.of(
-                        "name", "mar",
-                        "email", "marcusgmx.de",
-                        "password", "marus89")
-        );
         Map<String, List<FieldValidator>> rules = new HashMap<>();
 
-        FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("darf nicht leer sein");
+        FieldValidator notNull = text -> text == null ? Optional.of(ERR_FIELD_NULL) : Optional.empty();
+        FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("Fehler - darf nicht leer sein");
         FieldValidator minLength = minLengthN(5);
         FieldValidator maxLength = maxLengthN(10);
-        FieldValidator containsAtSign = email -> email.contains("@") ? Optional.empty() : Optional.of("enthält kein @ Zeichen");
-        FieldValidator notContainsDotAfterAt = email -> email.contains("@.") ? Optional.empty() : Optional.of("nach \"@\" existiert ein \".\"");
+        FieldValidator containsAtSign = email -> email.contains("@") ? Optional.empty() : Optional.of("Fehler - enthält kein @ Zeichen");
+        FieldValidator containsDotAfterAt = email -> email.contains("@.") ? Optional.of("Fehler - nach \"@\" existiert ein \".\"") : Optional.empty();
         FieldValidator hasDigit = value -> {
             char[] chars = value.toCharArray();
             for (char c : chars) {
                 if (Character.isDigit(c))
                     return Optional.empty();
             }
-            return Optional.of("enthält keine Ziffern");
+            return Optional.of("Fehler - enthält keine Ziffer");
         };
         FieldValidator hasUppercase = pass -> {
             char[] chars = pass.toCharArray();
             for (char c : chars)
                 if (Character.isUpperCase(c))
                     return Optional.empty();
-            return Optional.of("erste Buchstabe im unteren Register");
+            return Optional.of("Fehler - keine Buchstaben im oberen Register");
         };
-        FieldValidator notStartsWithUppercase = name -> !Character.isUpperCase(name.charAt(0)) ? Optional.empty() : Optional.of("fängt klein an");
+        FieldValidator startsWithUppercase = name -> Character.isUpperCase(name.charAt(0)) ? Optional.empty() : Optional.of("Fehler - fängt klein an");
         FieldValidator lettersOnly = name -> {
             char[] chars = name.toCharArray();
             for (char c : chars)
                 if (Character.isDigit(c))
-                    return Optional.of("enthält Ziffern");
+                    return Optional.of("Fehler - enthält Ziffern");
             return Optional.empty();
         };
 
         List<FieldValidator> nameRules = List.of(
+                notNull,
                 notEmpty,
                 minLength,
                 maxLength,
+                startsWithUppercase,
                 lettersOnly
         );
 
         List<FieldValidator> emailRules = List.of(
+                notNull,
                 notEmpty,
                 containsAtSign,
-                notContainsDotAfterAt
+                containsDotAfterAt
         );
 
-        List<FieldValidator> passRules = List.of(
+        List<FieldValidator> passRules = new ArrayList<>(List.of(
+                notNull,
                 notEmpty,
                 hasDigit
-        );
+        ));
+//        passRules.add(null);
 
-        Map<String, List<FieldValidator>> valueRules = new HashMap<>(
+        Map<String, List<FieldValidator>> fieldRules = new LinkedHashMap<>(
                 Map.of(
                         "name", nameRules,
                         "email", emailRules,
@@ -68,17 +75,22 @@ public class FieldValidatorTester {
                 )
         );
 
-        Map<String, List<String>> validated = validateAllFields(data, valueRules);
+        Map<String, String> data = new HashMap<>();
+        data.put("name", null);
+        data.put("email", "marcus@email.de");
+        data.put("password", "marcus23");
+
+        Map<String, List<String>> validated = validateAllFields(data, fieldRules);
         System.out.println(validated);
 
     }
 
     private static FieldValidator maxLengthN(int max) {
-        return text -> text.length() <= max ? Optional.empty() : Optional.of("max. " + max + " Zeichen");
+        return text -> text.length() <= max ? Optional.empty() : Optional.of("Fehler - max. " + max + " Zeichen");
     }
 
     private static FieldValidator minLengthN(int min) {
-        return text -> text.length() >= min ? Optional.empty() : Optional.of("mind. " + min + " Zeichen");
+        return text -> text.length() >= min ? Optional.empty() : Optional.of("Fehler - mind. " + min + " Zeichen");
     }
 
     public static List<String> validateField(String value, List<FieldValidator> validators) {
@@ -86,77 +98,146 @@ public class FieldValidatorTester {
 
         for (FieldValidator validator : validators) {
             Optional<String> optional = validator.validate(value);
-            if (optional.isPresent())
-                errors.add(String.valueOf(optional));
+            optional.ifPresent(errors::add);
         }
+
         return errors;
     }
 
-    public static Map<String, List<String>> validateAllFields(Map<String,String> data, Map<String, List<FieldValidator>> rules) {
-        Map<String, List<String>> log = new HashMap<>();
+    public static Map<String, List<String>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
+        Map<String, List<String>> log = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
-            List<FieldValidator> validators;
-            List<String> entries;
-            switch (key) {
-                case "name":
-                    validators = rules.get("name");
-                    entries = new ArrayList<>();
-                    for (FieldValidator validator : validators) {
-                        String value = pair.getValue();
-                        Optional<String> optional = validator.validate(value);
-                        entries.add(String.valueOf(optional));
-                    }
-                    log.put(key, entries);
-                    validators = null;
-                    entries = null;
+
+            if (key == null) continue;
+
+            List<String> entries = new ArrayList<>();
+            List<FieldValidator> validators = rules.get(key);
+            String value = pair.getValue();
+
+            PrecheckResult precheckResult = precheckField(value, validators);
+            if (!precheckResult.valid()) {
+                log.put(key, precheckResult.messages());
+                continue;
+            }
+
+            for (FieldValidator validator : validators) {
+                Optional<String> result = validator == null ? Optional.of(ERR_VALIDATOR_NULL) : validator.validate(value);
+                result.ifPresent(entries::add);
+            }
+
+            log.put(key, entries);
+        }
+        return log;
+    }
+
+    private static PrecheckResult precheckField(String value, List<FieldValidator> validators) {
+        if (value == null)
+            return new PrecheckResult(false, List.of(ERR_FIELD_NULL));
+        if (validators == null)
+            return new PrecheckResult(false, List.of(ERR_VALIDATORS_NULL));
+        if (validators.isEmpty())
+            return new PrecheckResult(false, List.of(ERR_VALIDATORS_EMPTY));
+        return new PrecheckResult(true, List.of());
+    }
+
+    public static Map<String, Optional<String>> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
+        Map<String, Optional<String>> log = new HashMap<>();
+
+        for (Map.Entry<String, String> pair : data.entrySet()) {
+            String key = pair.getKey();
+            String value = pair.getValue();
+            List<FieldValidator> validators = rules.get(key);
+
+            for (FieldValidator validator : validators) {
+                Optional<String> optional = validator.validate(value);
+                if (optional.isPresent()) {
+                    log.put(key, optional);
                     break;
-                case "email":
-                    validators = rules.get("email");
-                    entries = new ArrayList<>();
-                    for (FieldValidator validator : validators) {
-                        String value = pair.getValue();
-                        Optional<String> optional = validator.validate(value);
-                        entries.add(String.valueOf(optional));
-                    }
-                    log.put(key, entries);
-                    validators = null;
-                    entries = null;
-                    break;
-                case "password":
-                    validators = rules.get("password");
-                    entries = new ArrayList<>();
-                    for (FieldValidator validator : validators) {
-                        String value = pair.getValue();
-                        Optional<String> optional = validator.validate(value);
-                        entries.add(String.valueOf(optional));
-                    }
-                    log.put(key, entries);
-                    validators = null;
-                    entries = null;
+                }
             }
         }
 
         return log;
     }
 
-    public static Map<String, Optional<String>> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
-
-        return null;
-    }
-
     public static boolean isFormValid(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
 
-        return false;
+        for (Map.Entry<String, String> pair : data.entrySet()) {
+            String key = pair.getKey();
+            String value = pair.getValue();
+            List<FieldValidator> validators = rules.get(key);
+
+            for (FieldValidator validator : validators) {
+                Optional<String> result = validator.validate(value);
+                if (result.isPresent())
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     public static FieldValidator combine(List<FieldValidator> validators) {
-
-        return null;
+        return value -> {
+            for (FieldValidator validator : validators) {
+                Optional<String> result = validator.validate(value);
+                if (result.isPresent())
+                    return result;
+            }
+            return Optional.empty();
+        };
     }
 
     public static FieldValidator nullSafe(FieldValidator original, String messageOnNull) {
-        return null;
+        return value -> value == null ? Optional.of(messageOnNull) : original.validate(value);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
