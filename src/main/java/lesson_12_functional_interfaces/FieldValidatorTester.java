@@ -4,16 +4,17 @@ import java.util.*;
 
 public class FieldValidatorTester {
 
-    static Map<String, String> nullMessages = Map.of(
-            "name", "Name darf nicht leer sein",
-            "email", "E-Mail fehlt",
-            "password", "Passwort ist erforderlich"
-    );
+    static final String ERR_VALIDATORS_NULL = "Validator-Liste ist null";
+    static final String ERR_VALIDATORS_EMPTY = "Validator-Liste ist empty";
+    static final String ERR_VALIDATOR_NULL  = "Validator ist null";
+    static final String ERR_FIELD_NULL      = "Feld ist null";
+    record PrecheckResult(boolean valid, List<String> messages) {}
+
 
     public static void main(String[] args) {
         Map<String, List<FieldValidator>> rules = new HashMap<>();
 
-        FieldValidator notNull = text -> text == null ? Optional.of("Fehler - ist Null") : Optional.empty();
+        FieldValidator notNull = text -> text == null ? Optional.of(ERR_FIELD_NULL) : Optional.empty();
         FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("Fehler - darf nicht leer sein");
         FieldValidator minLength = minLengthN(5);
         FieldValidator maxLength = maxLengthN(10);
@@ -64,9 +65,9 @@ public class FieldValidatorTester {
                 notEmpty,
                 hasDigit
         ));
-        passRules.add(null);
+//        passRules.add(null);
 
-        Map<String, List<FieldValidator>> fieldRules = new HashMap<>(
+        Map<String, List<FieldValidator>> fieldRules = new LinkedHashMap<>(
                 Map.of(
                         "name", nameRules,
                         "email", emailRules,
@@ -75,7 +76,7 @@ public class FieldValidatorTester {
         );
 
         Map<String, String> data = new HashMap<>();
-        data.put("name", "Marcus");
+        data.put("name", null);
         data.put("email", "marcus@email.de");
         data.put("password", "marcus23");
 
@@ -104,24 +105,41 @@ public class FieldValidatorTester {
     }
 
     public static Map<String, List<String>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
-        Map<String, List<String>> log = new HashMap<>();
+        Map<String, List<String>> log = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
-            String value = pair.getValue();
-            List<FieldValidator> validators = rules.get(key);
+
+            if (key == null) continue;
+
             List<String> entries = new ArrayList<>();
+            List<FieldValidator> validators = rules.get(key);
+            String value = pair.getValue();
+
+            PrecheckResult precheckResult = precheckField(value, validators);
+            if (!precheckResult.valid()) {
+                log.put(key, precheckResult.messages());
+                continue;
+            }
 
             for (FieldValidator validator : validators) {
-                String messageOnNull = nullMessages.getOrDefault(key, key + " ist null");
-                FieldValidator safedValidate = FieldValidator.safeValidate(validator, messageOnNull);
-                Optional<String> result = safedValidate.validate(value);
+                Optional<String> result = validator == null ? Optional.of(ERR_VALIDATOR_NULL) : validator.validate(value);
                 result.ifPresent(entries::add);
             }
 
             log.put(key, entries);
         }
         return log;
+    }
+
+    private static PrecheckResult precheckField(String value, List<FieldValidator> validators) {
+        if (value == null)
+            return new PrecheckResult(false, List.of(ERR_FIELD_NULL));
+        if (validators == null)
+            return new PrecheckResult(false, List.of(ERR_VALIDATORS_NULL));
+        if (validators.isEmpty())
+            return new PrecheckResult(false, List.of(ERR_VALIDATORS_EMPTY));
+        return new PrecheckResult(true, List.of());
     }
 
     public static Map<String, Optional<String>> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
