@@ -4,6 +4,12 @@ import java.util.*;
 
 public class FieldValidatorTester {
 
+    static Map<String, String> nullMessages = Map.of(
+            "name", "Name darf nicht leer sein",
+            "email", "E-Mail fehlt",
+            "password", "Passwort ist erforderlich"
+    );
+
     public static void main(String[] args) {
         Map<String, List<FieldValidator>> rules = new HashMap<>();
 
@@ -53,13 +59,14 @@ public class FieldValidatorTester {
                 containsDotAfterAt
         );
 
-        List<FieldValidator> passRules = List.of(
+        List<FieldValidator> passRules = new ArrayList<>(List.of(
                 notNull,
                 notEmpty,
                 hasDigit
-        );
+        ));
+        passRules.add(null);
 
-        Map<String, List<FieldValidator>> valueRules = new HashMap<>(
+        Map<String, List<FieldValidator>> fieldRules = new HashMap<>(
                 Map.of(
                         "name", nameRules,
                         "email", emailRules,
@@ -67,14 +74,12 @@ public class FieldValidatorTester {
                 )
         );
 
-        Map<String, String> data = new HashMap<>(
-                Map.of(
-                        "name", "Marcus",
-                        "email", "marcus@gmx.de",
-                        "password", "marus23")
-        );
+        Map<String, String> data = new HashMap<>();
+        data.put("name", "Marcus");
+        data.put("email", "marcus@email.de");
+        data.put("password", "marcus23");
 
-        Map<String, List<String>> validated = validateAllFields(data, valueRules);
+        Map<String, List<String>> validated = validateAllFields(data, fieldRules);
         System.out.println(validated);
 
     }
@@ -98,18 +103,20 @@ public class FieldValidatorTester {
         return errors;
     }
 
-    public static Map<String, List<String>> validateAllFields(Map<String,String> data, Map<String, List<FieldValidator>> rules) {
+    public static Map<String, List<String>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
         Map<String, List<String>> log = new HashMap<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
             String value = pair.getValue();
             List<FieldValidator> validators = rules.get(key);
-            List<String> entries = new ArrayList<>();;
+            List<String> entries = new ArrayList<>();
 
             for (FieldValidator validator : validators) {
-                Optional<String> optional = validator.validate(value);
-                optional.ifPresent(entries::add);
+                String messageOnNull = nullMessages.getOrDefault(key, key + " ist null");
+                FieldValidator safedValidate = FieldValidator.safeValidate(validator, messageOnNull);
+                Optional<String> result = safedValidate.validate(value);
+                result.ifPresent(entries::add);
             }
 
             log.put(key, entries);
