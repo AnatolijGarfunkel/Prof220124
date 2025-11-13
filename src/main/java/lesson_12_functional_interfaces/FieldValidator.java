@@ -7,6 +7,12 @@ public interface FieldValidator {
 
     Optional<String> validate(String value);
 
+    static FieldValidator safeValidate(FieldValidator validator, String messageOnNull) {
+        if (validator == null)
+            return value -> Optional.of("validator must not be null");
+        return value -> value == null ? Optional.of(messageOnNull) : validator.validate(value);
+    }
+
     default FieldValidator and(FieldValidator other) {
         return value -> {
             Optional<String> thisOptional = this.validate(value);
