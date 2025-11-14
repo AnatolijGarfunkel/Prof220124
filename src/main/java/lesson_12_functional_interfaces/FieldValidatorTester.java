@@ -4,9 +4,6 @@ import java.util.*;
 
 public class FieldValidatorTester {
 
-    static final String ERR_VALIDATORS_NULL = "Validator-Liste ist null";
-    static final String ERR_VALIDATORS_EMPTY = "Validator-Liste ist empty";
-    static final String ERR_VALIDATOR_NULL = "Validator ist null";
     static final String ERR_FIELD_NULL = "Feld ist null";
 
     record PrecheckResult(boolean valid, List<String> messages) {
@@ -79,7 +76,7 @@ public class FieldValidatorTester {
 
         Map<String, String> data = new HashMap<>();
         data.put("name", null);
-        data.put("email", "marcus@email.de");
+        data.put("email", "marcusemail.de");
         data.put("password", "marcus23");
 
         Map<String, List<ValidationResult>> validated = validateAllFields(data, fieldRules);
@@ -163,7 +160,7 @@ public class FieldValidatorTester {
                     new ValidationResult(
                             key,
                             ValidationStatus.FIELD_NULL,
-                            "Feld '" + key + "' ist null"
+                            "Schlüssel '" + key + "' ist null"
                     )
             );
         }
@@ -173,7 +170,7 @@ public class FieldValidatorTester {
                     new ValidationResult(
                             key,
                             ValidationStatus.VALIDATORS_NULL,
-                            "Keine Validator-Liste für feld '" + key + "'"
+                            "Keine Validator-Liste für Schlüssel '" + key + "'"
                     )
             );
         }
@@ -183,7 +180,7 @@ public class FieldValidatorTester {
                     new ValidationResult(
                             key,
                             ValidationStatus.VALIDATORS_EMPTY,
-                            "Validator-Liste für Feld '" + key + "' ist leer"
+                            "Validator-Liste für Schlüssel '" + key + "' ist leer"
                     )
             );
         }
