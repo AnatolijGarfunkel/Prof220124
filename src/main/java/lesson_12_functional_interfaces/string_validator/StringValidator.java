@@ -13,7 +13,7 @@ public class StringValidator {
     }
 
     public List validates(String value) {
-        
+
         return null;
     }
 }
