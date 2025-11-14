@@ -1,0 +1,14 @@
+package lesson_12_functional_interfaces;
+
+public record ValidationResult(
+
+        String field,
+
+        ValidationStatus status,
+
+        String message
+) {
+    public boolean isOk() {
+        return status == ValidationStatus.OK;
+    }
+}
