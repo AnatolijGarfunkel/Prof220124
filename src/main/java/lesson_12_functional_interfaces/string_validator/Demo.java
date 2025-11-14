@@ -8,11 +8,12 @@ public class Demo {
 
         StringValidator validator = new StringValidator();
 
-        validator.addRule(StringRules.notNull());
         validator.addRule(StringRules.notEmpty());
         validator.addRule(StringRules.minLength(3));
 
-        List<String> errors = validator.validate("Hi");
+        String proof = null;
+
+        List<String> errors = validator.validate(proof);
 
         if (errors.isEmpty())
             System.out.println("String ist gültig");

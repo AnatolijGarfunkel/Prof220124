@@ -13,6 +13,10 @@ public class StringValidator {
 
     public List<String> validate(String value) {
         List<String> result = new ArrayList<>();
+        if (value == null) {
+            result.add("Wert darf nicht null sein.");
+            return result;
+        }
         for (StringRule rule : rules) {
             String validated = rule.validate(value);
             if (validated != null)
