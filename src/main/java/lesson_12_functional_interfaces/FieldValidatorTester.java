@@ -116,7 +116,7 @@ public class FieldValidatorTester {
             List<FieldValidator> validators = rules.get(key);
             String value = pair.getValue();
 
-            PrecheckResult precheckResult = precheckField(value, validators);
+            precheckField(value, validators);
             if (!precheckResult.valid()) {
                 log.put(key, precheckResult.messages());
                 continue;
@@ -132,14 +132,42 @@ public class FieldValidatorTester {
         return log;
     }
 
-    private static PrecheckResult precheckField(String value, List<FieldValidator> validators) {
-        if (value == null)
-            return new PrecheckResult(false, List.of(ERR_FIELD_NULL));
-        if (validators == null)
-            return new PrecheckResult(false, List.of(ERR_VALIDATORS_NULL));
-        if (validators.isEmpty())
-            return new PrecheckResult(false, List.of(ERR_VALIDATORS_EMPTY));
-        return new PrecheckResult(true, List.of());
+    private static Optional<ValidationResult> precheckField(
+            String fieldName,
+            String value,
+            List<FieldValidator> validators
+    ) {
+        if (value == null) {
+            return Optional.of(
+                    new ValidationResult(
+                            fieldName,
+                            ValidationStatus.FIELD_NULL,
+                            "Feld '" + fieldName + "' ist null"
+                    )
+            );
+        }
+
+        if (validators == null) {
+            return Optional.of(
+                    new ValidationResult(
+                            fieldName,
+                            ValidationStatus.VALIDATORS_NULL,
+                            "Keine Validator-Liste für feld '" + fieldName + "'"
+                    )
+            );
+        }
+
+        if (validators.isEmpty()) {
+            return Optional.of(
+                    new ValidationResult(
+                            fieldName,
+                            ValidationStatus.VALIDATORS_EMPTY,
+                            "Validator-Liste für Feld '" + fieldName + "' ist leer"
+                    )
+            );
+        }
+
+        return Optional.empty();
     }
 
     public static Map<String, Optional<String>> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
