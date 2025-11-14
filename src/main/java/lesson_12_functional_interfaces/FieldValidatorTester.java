@@ -6,9 +6,11 @@ public class FieldValidatorTester {
 
     static final String ERR_VALIDATORS_NULL = "Validator-Liste ist null";
     static final String ERR_VALIDATORS_EMPTY = "Validator-Liste ist empty";
-    static final String ERR_VALIDATOR_NULL  = "Validator ist null";
-    static final String ERR_FIELD_NULL      = "Feld ist null";
-    record PrecheckResult(boolean valid, List<String> messages) {}
+    static final String ERR_VALIDATOR_NULL = "Validator ist null";
+    static final String ERR_FIELD_NULL = "Feld ist null";
+
+    record PrecheckResult(boolean valid, List<String> messages) {
+    }
 
 
     public static void main(String[] args) {
@@ -80,7 +82,7 @@ public class FieldValidatorTester {
         data.put("email", "marcus@email.de");
         data.put("password", "marcus23");
 
-        Map<String, List<String>> validated = validateAllFields(data, fieldRules);
+        Map<String, List<ValidationResult>> validated = validateAllFields(data, fieldRules);
         System.out.println(validated);
 
     }
@@ -104,45 +106,64 @@ public class FieldValidatorTester {
         return errors;
     }
 
-    public static Map<String, List<String>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
-        Map<String, List<String>> log = new LinkedHashMap<>();
+    public static Map<String, List<ValidationResult>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
+        Map<String, List<ValidationResult>> log = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
 
             if (key == null) continue;
 
-            List<String> entries = new ArrayList<>();
+            List<ValidationResult> entries = new ArrayList<>();
             List<FieldValidator> validators = rules.get(key);
             String value = pair.getValue();
 
-            precheckField(value, validators);
-            if (!precheckResult.valid()) {
-                log.put(key, precheckResult.messages());
+            Optional<ValidationResult> precheckField = precheckField(key, value, validators);
+            if (precheckField.isPresent()) {
+                entries.add(precheckField.get());
+                log.put(key, entries);
                 continue;
             }
 
             for (FieldValidator validator : validators) {
-                Optional<String> result = validator == null ? Optional.of(ERR_VALIDATOR_NULL) : validator.validate(value);
-                result.ifPresent(entries::add);
+                if (validator == null) {
+                    entries.add(
+                            new ValidationResult(
+                                    key,
+                                    ValidationStatus.VALIDATOR_NULL,
+                                    "Ein Validator für Schlüssel '" + key + "' ist null"
+                            )
+                    );
+                    continue;
+                }
+
+                Optional<String> message = validator.validate(value);
+                message.ifPresent(string -> entries.add(
+                        new ValidationResult(
+                                key,
+                                ValidationStatus.RULE_VIOLATION,
+                                string
+                        )
+                ));
             }
 
             log.put(key, entries);
         }
+
         return log;
     }
 
     private static Optional<ValidationResult> precheckField(
-            String fieldName,
+            String key,
             String value,
             List<FieldValidator> validators
     ) {
         if (value == null) {
             return Optional.of(
                     new ValidationResult(
-                            fieldName,
+                            key,
                             ValidationStatus.FIELD_NULL,
-                            "Feld '" + fieldName + "' ist null"
+                            "Feld '" + key + "' ist null"
                     )
             );
         }
@@ -150,9 +171,9 @@ public class FieldValidatorTester {
         if (validators == null) {
             return Optional.of(
                     new ValidationResult(
-                            fieldName,
+                            key,
                             ValidationStatus.VALIDATORS_NULL,
-                            "Keine Validator-Liste für feld '" + fieldName + "'"
+                            "Keine Validator-Liste für feld '" + key + "'"
                     )
             );
         }
@@ -160,9 +181,9 @@ public class FieldValidatorTester {
         if (validators.isEmpty()) {
             return Optional.of(
                     new ValidationResult(
-                            fieldName,
+                            key,
                             ValidationStatus.VALIDATORS_EMPTY,
-                            "Validator-Liste für Feld '" + fieldName + "' ist leer"
+                            "Validator-Liste für Feld '" + key + "' ist leer"
                     )
             );
         }
