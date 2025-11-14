@@ -1,20 +1,15 @@
 package lesson_12_functional_interfaces;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class FieldValidatorTester {
 
     static final String ERR_FIELD_NULL = "Feld ist null";
 
-    record PrecheckResult(boolean valid, List<String> messages) {
-    }
-
 
     public static void main(String[] args) {
         Map<String, List<FieldValidator>> rules = new HashMap<>();
 
-        FieldValidator notNull = text -> text == null ? Optional.of(ERR_FIELD_NULL) : Optional.empty();
         FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("Fehler - darf nicht leer sein");
         FieldValidator minLength = minLengthN(5);
         FieldValidator maxLength = maxLengthN(10);
@@ -45,7 +40,6 @@ public class FieldValidatorTester {
         };
 
         List<FieldValidator> nameRules = List.of(
-                notNull,
                 notEmpty,
                 minLength,
                 maxLength,
@@ -54,18 +48,15 @@ public class FieldValidatorTester {
         );
 
         List<FieldValidator> emailRules = List.of(
-                notNull,
                 notEmpty,
                 containsAtSign,
                 containsDotAfterAt
         );
 
         List<FieldValidator> passRules = new ArrayList<>(List.of(
-                notNull,
                 notEmpty,
                 hasDigit
         ));
-//        passRules.add(null);
 
         Map<String, List<FieldValidator>> fieldRules = new LinkedHashMap<>(
                 Map.of(
@@ -93,16 +84,9 @@ public class FieldValidatorTester {
         return text -> text.length() >= min ? Optional.empty() : Optional.of("Fehler - mind. " + min + " Zeichen");
     }
 
-    public static List<ValidationResult> validateField(String key, String value, List<FieldValidator> validators) {
+    public static List<ValidationResult> validateField(String value, List<FieldValidator> validators) {
         List<ValidationResult> errors = new ArrayList<>();
-        if (key == null) {
-            errors.add(new ValidationResult(
-                    "Schlüssel",
-                    ValidationStatus.KEY_NULL,
-                    "Schlüssel ist null"
-            ));
-            key = "Schlüssel";
-        }
+        String key = "key";
 
         Optional<ValidationResult> precheckField = precheckField(key, value, validators);
         if (precheckField.isPresent()) {
@@ -121,10 +105,9 @@ public class FieldValidatorTester {
             }
 
             Optional<String> message = validator.validate(value);
-            String finalKey = key;
             message.ifPresent(string -> errors.add(
                     new ValidationResult(
-                            finalKey,
+                            key,
                             ValidationStatus.RULE_VIOLATION,
                             string
 
@@ -137,13 +120,13 @@ public class FieldValidatorTester {
 
     public static Map<String, List<ValidationResult>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
         Map<String, List<ValidationResult>> log = new LinkedHashMap<>();
-        List<ValidationResult> entries = new ArrayList<>();
+        List<ValidationResult> validationResults = new ArrayList<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
 
             if (key == null) {
-                entries.add(new ValidationResult(
+                validationResults.add(new ValidationResult(
                         "Schlüssel",
                         ValidationStatus.KEY_NULL,
                         "Schlüssel ist null"
@@ -154,36 +137,8 @@ public class FieldValidatorTester {
             List<FieldValidator> validators = rules.get(key);
             String value = pair.getValue();
 
-            Optional<ValidationResult> precheckField = precheckField(key, value, validators);
-            if (precheckField.isPresent()) {
-                entries.add(precheckField.get());
-                log.put(key, entries);
-                continue;
-            }
-
-            for (FieldValidator validator : validators) {
-                if (validator == null) {
-                    entries.add(
-                            new ValidationResult(
-                                    key,
-                                    ValidationStatus.VALIDATOR_NULL,
-                                    "Ein Validator für Schlüssel '" + key + "' ist null"
-                            )
-                    );
-                    continue;
-                }
-
-                Optional<String> message = validator.validate(value);
-                message.ifPresent(string -> entries.add(
-                        new ValidationResult(
-                                key,
-                                ValidationStatus.RULE_VIOLATION,
-                                string
-                        )
-                ));
-            }
-
-            log.put(key, entries);
+            validationResults.addAll(validateField(value, validators));
+            log.put(key, validationResults);
         }
 
         return log;
