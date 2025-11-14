@@ -17,11 +17,11 @@ public class PersonDemo {
 
         for (Person person : persons) {
             System.out.println("Prüfe: " + person);
-            List<String> errors = validator.validate(person);
+            List<ValidationError> errors = validator.validate(person);
             if (errors.isEmpty())
                 System.out.println(" OK");
             else
-                errors.forEach(System.out::println);
+                errors.forEach(err -> System.out.println(" Fehler in Feld '" + err.fieldName() + "': " + err.message()));
             System.out.println();
         }
     }

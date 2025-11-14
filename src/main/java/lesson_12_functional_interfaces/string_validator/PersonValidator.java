@@ -5,8 +5,8 @@ import java.util.List;
 
 public class PersonValidator {
 
-    public List<String> validate(Person person) {
-        List<String> result = new ArrayList<>();
+    public List<ValidationError> validate(Person person) {
+        List<ValidationError> result = new ArrayList<>();
 
         StringValidator nameValidator = new StringValidator();
         nameValidator.addRule(StringRules.notEmpty());
@@ -14,7 +14,7 @@ public class PersonValidator {
 
         List<String> nameErrors = nameValidator.validate(person.name());
         for (String data : nameErrors)
-            result.add("name: " + data);
+            result.add(new ValidationError(person.name(), data));
 
         StringValidator ageValidator = new StringValidator();
         ageValidator.addRule(StringRules.notEmpty());
@@ -22,12 +22,12 @@ public class PersonValidator {
 
         List<String> ageErrors = ageValidator.validate(person.age());
         for (String data : ageErrors)
-            result.add("age: " + data);
+            result.add(new ValidationError(person.age(), data));
 
         if (ageErrors.isEmpty()) {
             int age = Integer.parseInt(person.age());
             if (age < 0 || age > 130)
-                result.add("age: Alter muss zwischen 0 ung 130 liegen.");
+                result.add(new ValidationError(person.age(), "Alter muss zwischen 0 ung 130 liegen."));
         }
 
         return result;
