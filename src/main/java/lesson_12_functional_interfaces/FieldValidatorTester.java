@@ -92,12 +92,43 @@ public class FieldValidatorTester {
         return text -> text.length() >= min ? Optional.empty() : Optional.of("Fehler - mind. " + min + " Zeichen");
     }
 
-    public static List<String> validateField(String key, String value, List<FieldValidator> validators) {
-        List<String> errors = new ArrayList<>();
+    public static List<ValidationResult> validateField(String key, String value, List<FieldValidator> validators) {
+        List<ValidationResult> errors = new ArrayList<>();
+        if (key == null) {
+            errors.add(new ValidationResult(
+                    "Schlüssel",
+                    ValidationStatus.KEY_NULL,
+                    "Schlüssel ist null"
+            ));
+            key = "Schlüssel";
+        }
+
+        Optional<ValidationResult> precheckField = precheckField(key, value, validators);
+        if (precheckField.isPresent()) {
+            errors.add(precheckField.get());
+            return errors;
+        }
 
         for (FieldValidator validator : validators) {
-            Optional<String> optional = validator.validate(value);
-            optional.ifPresent(errors::add);
+            if (validator == null) {
+                errors.add(new ValidationResult(
+                        key,
+                        ValidationStatus.VALIDATOR_NULL,
+                        "Ein Validator für Schlüssel '" + key + "' ist null"
+                ));
+                continue;
+            }
+
+            Optional<String> message = validator.validate(value);
+            String finalKey = key;
+            message.ifPresent(string -> errors.add(
+                    new ValidationResult(
+                            finalKey,
+                            ValidationStatus.RULE_VIOLATION,
+                            string
+
+                    )
+            ));
         }
 
         return errors;
