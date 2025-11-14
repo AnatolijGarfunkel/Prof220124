@@ -32,4 +32,9 @@ public class PersonValidator {
 
         return result;
     }
+
+    public PersonalValidationResult validateResult(Person person) {
+        List<ValidationError> errors = validate(person);
+        return new PersonalValidationResult(person, errors);
+    }
 }
