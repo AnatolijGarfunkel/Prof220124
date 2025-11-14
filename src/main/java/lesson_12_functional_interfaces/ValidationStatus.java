@@ -8,5 +8,5 @@ public enum ValidationStatus {
     VALIDATORS_EMPTY,
     VALIDATOR_NULL,
     RULE_VIOLATION
-    
+
 }
