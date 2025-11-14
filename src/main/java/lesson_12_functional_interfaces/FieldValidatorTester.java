@@ -1,6 +1,7 @@
 package lesson_12_functional_interfaces;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class FieldValidatorTester {
 
@@ -143,7 +144,7 @@ public class FieldValidatorTester {
 
             if (key == null) {
                 entries.add(new ValidationResult(
-                    "Schlüssel",
+                        "Schlüssel",
                         ValidationStatus.KEY_NULL,
                         "Schlüssel ist null"
                 ));
@@ -226,21 +227,54 @@ public class FieldValidatorTester {
         return Optional.empty();
     }
 
-    public static Map<String, Optional<String>> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
-        Map<String, Optional<String>> log = new HashMap<>();
+    public static Map<String, ValidationResult> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
+        Map<String, ValidationResult> log = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
-            String value = pair.getValue();
+
+            if (key == null) {
+                log.put("NULL-Schlüssel",
+                        new ValidationResult(
+                                "Schlüssel",
+                                ValidationStatus.KEY_NULL,
+                                "Schlüssel ist null"
+                        )
+                );
+                return log;
+            }
+
             List<FieldValidator> validators = rules.get(key);
+            String value = pair.getValue();
+
+            Optional<ValidationResult> precheckField = precheckField(key, value, validators);
+            if (precheckField.isPresent()) {
+                log.put(key, precheckField.get());
+                return log;
+            }
 
             for (FieldValidator validator : validators) {
-                Optional<String> optional = validator.validate(value);
-                if (optional.isPresent()) {
-                    log.put(key, optional);
-                    break;
+                if (validator == null) {
+                    log.put(key,
+                            new ValidationResult(
+                                    key,
+                                    ValidationStatus.VALIDATOR_NULL,
+                                    "Ein Validator für Schlüssel '" + key + "' ist null"
+                            ));
+                    return log;
                 }
+
+                Optional<String> message = validator.validate(value);
+                message.ifPresent(string -> log.put(
+                        key,
+                        new ValidationResult(
+                                key,
+                                ValidationStatus.RULE_VIOLATION,
+                                string
+                        )
+                ));
             }
+
         }
 
         return log;
