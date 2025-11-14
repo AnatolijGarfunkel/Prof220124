@@ -2,7 +2,7 @@ package lesson_12_functional_interfaces;
 
 public record ValidationResult(
 
-        String field,
+        String key,
 
         ValidationStatus status,
 

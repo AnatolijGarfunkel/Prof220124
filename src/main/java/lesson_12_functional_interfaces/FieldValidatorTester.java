@@ -76,7 +76,7 @@ public class FieldValidatorTester {
 
         Map<String, String> data = new HashMap<>();
         data.put("name", null);
-        data.put("email", "marcusemail.de");
+        data.put(null, "marcusemail.de");
         data.put("password", "marcus23");
 
         Map<String, List<ValidationResult>> validated = validateAllFields(data, fieldRules);
@@ -92,7 +92,7 @@ public class FieldValidatorTester {
         return text -> text.length() >= min ? Optional.empty() : Optional.of("Fehler - mind. " + min + " Zeichen");
     }
 
-    public static List<String> validateField(String value, List<FieldValidator> validators) {
+    public static List<String> validateField(String key, String value, List<FieldValidator> validators) {
         List<String> errors = new ArrayList<>();
 
         for (FieldValidator validator : validators) {
@@ -105,13 +105,20 @@ public class FieldValidatorTester {
 
     public static Map<String, List<ValidationResult>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
         Map<String, List<ValidationResult>> log = new LinkedHashMap<>();
+        List<ValidationResult> entries = new ArrayList<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
 
-            if (key == null) continue;
+            if (key == null) {
+                entries.add(new ValidationResult(
+                    "Schlüssel",
+                        ValidationStatus.KEY_NULL,
+                        "Schlüssel ist null"
+                ));
+                continue;
+            }
 
-            List<ValidationResult> entries = new ArrayList<>();
             List<FieldValidator> validators = rules.get(key);
             String value = pair.getValue();
 
