@@ -241,7 +241,7 @@ public class FieldValidatorTester {
                                 "Schlüssel ist null"
                         )
                 );
-                return log;
+                continue;
             }
 
             List<FieldValidator> validators = rules.get(key);
@@ -250,7 +250,7 @@ public class FieldValidatorTester {
             Optional<ValidationResult> precheckField = precheckField(key, value, validators);
             if (precheckField.isPresent()) {
                 log.put(key, precheckField.get());
-                return log;
+                continue;
             }
 
             for (FieldValidator validator : validators) {
@@ -261,22 +261,19 @@ public class FieldValidatorTester {
                                     ValidationStatus.VALIDATOR_NULL,
                                     "Ein Validator für Schlüssel '" + key + "' ist null"
                             ));
-                    return log;
+                    break;
                 }
 
                 Optional<String> message = validator.validate(value);
-                message.ifPresent(string -> log.put(
-                        key,
-                        new ValidationResult(
-                                key,
-                                ValidationStatus.RULE_VIOLATION,
-                                string
-                        )
-                ));
+                if (message.isPresent()) {
+                    log.put(key,
+                            new ValidationResult(
+                            key, ValidationStatus.RULE_VIOLATION, message.get())
+                    );
+                    break;
+                }
             }
-
         }
-
         return log;
     }
 
