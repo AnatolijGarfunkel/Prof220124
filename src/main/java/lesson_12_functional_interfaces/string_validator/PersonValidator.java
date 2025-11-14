@@ -33,8 +33,66 @@ public class PersonValidator {
         return result;
     }
 
-    public PersonalValidationResult validateResult(Person person) {
+    public PersonalValidationResult validatePerson(Person person) {
         List<ValidationError> errors = validate(person);
         return new PersonalValidationResult(person, errors);
     }
+
+    public List<PersonalValidationResult> validateAll(List<Person> persons) {
+        List<PersonalValidationResult> results = new ArrayList<>();
+
+        for (Person person : persons) {
+            PersonalValidationResult result = validatePerson(person);
+            results.add(result);
+        }
+
+        return results;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -15,9 +15,10 @@ public class PersonDemo {
                 new Person("Dana", "25")
         );
 
-        for (Person person : persons) {
-            System.out.println("Prüfe: " + person);
-            PersonalValidationResult result = validator.validateResult(person);
+        List<PersonalValidationResult> results = validator.validateAll(persons);
+
+        for (PersonalValidationResult result : results) {
+            System.out.println("Prüfe: " + result.person());
             if (result.isValid())
                 System.out.println(" OK");
             else {
