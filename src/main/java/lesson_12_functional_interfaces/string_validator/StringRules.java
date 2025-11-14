@@ -17,4 +17,13 @@ public class StringRules {
             return null;
         };
     }
+
+    public static StringRule onlyDigits() {
+        return value -> {
+            if (value.chars().anyMatch(Character::isDigit)) {
+                return "Wert darf nur Ziffern enthalten.";
+            }
+            return null;
+        };
+    }
 }
