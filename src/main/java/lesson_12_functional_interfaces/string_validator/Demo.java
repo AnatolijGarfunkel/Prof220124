@@ -9,9 +9,16 @@ public class Demo {
         StringValidator validator = new StringValidator();
 
         validator.addRule(StringRules.notNull());
-
         validator.addRule(StringRules.notEmpty());
+        validator.addRule(StringRules.minLength(3));
 
-        List errors = validator.validates("Hi");
+        List<String> errors = validator.validate("Hi");
+
+        if (errors.isEmpty())
+            System.out.println("String ist gültig");
+        else {
+            System.out.println("Fehler");
+            errors.forEach(System.out::println);
+        }
     }
 }
