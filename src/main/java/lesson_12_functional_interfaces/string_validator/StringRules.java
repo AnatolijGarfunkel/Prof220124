@@ -20,9 +20,17 @@ public class StringRules {
 
     public static StringRule onlyDigits() {
         return value -> {
-            if (value.chars().anyMatch(Character::isDigit)) {
+            if (!value.chars().allMatch(Character::isDigit)) {
                 return "Wert darf nur Ziffern enthalten.";
             }
+            return null;
+        };
+    }
+
+    public static StringRule maxLength(int max) {
+        return value -> {
+            if (value.length() > max)
+                return "Wert darf höchstens " + max + " Zeichen lang sein.";
             return null;
         };
     }

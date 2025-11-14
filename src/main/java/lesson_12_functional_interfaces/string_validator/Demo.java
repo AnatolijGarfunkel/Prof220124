@@ -10,16 +10,24 @@ public class Demo {
 
         validator.addRule(StringRules.notEmpty());
         validator.addRule(StringRules.minLength(3));
+        validator.addRule(StringRules.onlyDigits());
+        validator.addRule(StringRules.maxLength(5));
 
-        String proof = null;
+        List<String> tests = List.of(
+                "",
+                "Hi",
+                "123",
+                "123456",
+                "12ab"
+        );
 
-        List<String> errors = validator.validate(proof);
-
-        if (errors.isEmpty())
-            System.out.println("String ist gültig");
-        else {
-            System.out.println("Fehler");
-            errors.forEach(System.out::println);
+        for (String s : tests) {
+            System.out.println("Teste: " + s);
+            List<String> errors = validator.validate(s);
+            if (errors.isEmpty())
+                System.out.println(" OK");
+            else
+                errors.forEach(System.out::println);
         }
     }
 }
