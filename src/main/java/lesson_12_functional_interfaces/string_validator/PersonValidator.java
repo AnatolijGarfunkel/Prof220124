@@ -8,17 +8,19 @@ public class PersonValidator {
     public List<ValidationError> validate(Person person) {
         List<ValidationError> result = new ArrayList<>();
 
-        StringValidator nameValidator = new StringValidator();
-        nameValidator.addRule(StringRules.notEmpty());
-        nameValidator.addRule(StringRules.minLength(2));
+        StringValidator nameValidator = StringValidatorBuilder.create()
+                .noEmpty()
+                .minLength(2)
+                .build();
 
         List<String> nameErrors = nameValidator.validate(person.name());
         for (String data : nameErrors)
             result.add(new ValidationError(person.name(), data));
 
-        StringValidator ageValidator = new StringValidator();
-        ageValidator.addRule(StringRules.notEmpty());
-        ageValidator.addRule(StringRules.onlyDigits());
+        StringValidator ageValidator = StringValidatorBuilder.create()
+                .noEmpty()
+                .onlyDigits()
+                .build();
 
         List<String> ageErrors = ageValidator.validate(person.age());
         for (String data : ageErrors)
