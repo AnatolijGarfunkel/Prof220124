@@ -6,7 +6,10 @@ public class PersonDemo {
 
     public static void main(String[] args) {
 
-        PersonValidator validator = new PersonValidator();
+        PersonValidator validator = PersonValidatorBuilder.create()
+                .withDefaultNameRules()
+                .withDefaultAgeRules()
+                .build();
 
         List<Person> persons = List.of(
                 new Person("A", "20"),
@@ -23,7 +26,7 @@ public class PersonDemo {
                 System.out.println(" OK");
             else {
                 for (ValidationError err : result.errors())
-                    System.out.println(" Fehler in Feld '" + err.fieldName() + "': " + err.message());
+                    System.out.println("Fehler in Feld '" + err.fieldName() + "': " + err.message());
             }
         }
     }
