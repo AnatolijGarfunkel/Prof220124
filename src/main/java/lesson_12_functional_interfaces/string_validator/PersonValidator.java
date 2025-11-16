@@ -2,8 +2,18 @@ package lesson_12_functional_interfaces.string_validator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PersonValidator {
+
+    private final StringValidator nameValidator;
+
+    private final StringValidator ageValidator;
+
+    public PersonValidator(StringValidator nameValidator, StringValidator ageValidator) {
+        this.nameValidator = Objects.requireNonNull(nameValidator);
+        this.ageValidator = Objects.requireNonNull(ageValidator);
+    }
 
     public List<ValidationError> validate(Person person) {
         List<ValidationError> result = new ArrayList<>();
@@ -14,8 +24,8 @@ public class PersonValidator {
                 .build();
 
         List<String> nameErrors = nameValidator.validate(person.name());
-        for (String data : nameErrors)
-            result.add(new ValidationError(person.name(), data));
+        for (String err : nameErrors)
+            result.add(new ValidationError("name: " + person.name(), err));
 
         StringValidator ageValidator = StringValidatorBuilder.create()
                 .noEmpty()
@@ -24,12 +34,12 @@ public class PersonValidator {
 
         List<String> ageErrors = ageValidator.validate(person.age());
         for (String data : ageErrors)
-            result.add(new ValidationError(person.age(), data));
+            result.add(new ValidationError("age: " + person.age(), data));
 
         if (ageErrors.isEmpty()) {
             int age = Integer.parseInt(person.age());
             if (age < 0 || age > 130)
-                result.add(new ValidationError(person.age(), "Alter muss zwischen 0 ung 130 liegen."));
+                result.add(new ValidationError("age: " + person.age(), "Alter muss zwischen 0 ung 130 liegen."));
         }
 
         return result;
