@@ -17,6 +17,11 @@ public class StringValidator {
             result.add("Wert darf nicht null sein.");
             return result;
         }
+        if (value.isEmpty()) {
+            result.add("Wert darf nicht leer sein");
+            return result;
+        }
+
         for (StringRule rule : rules) {
             String validated = rule.validate(value);
             if (validated != null)
