@@ -13,11 +13,6 @@ public class StringValidatorBuilder {
         return new StringValidatorBuilder();
     }
 
-    public StringValidatorBuilder noEmpty() {
-        validator.addRule(StringRules.notEmpty());
-        return this;
-    }
-
     public StringValidatorBuilder minLength(int length) {
         validator.addRule(StringRules.minLength(length));
         return this;
@@ -30,6 +25,11 @@ public class StringValidatorBuilder {
 
     public StringValidatorBuilder maxLength(int max) {
         validator.addRule(StringRules.maxLength(max));
+        return this;
+    }
+
+    public StringValidatorBuilder maxAge(int age) {
+        validator.addRule(StringRules.maxAge(age));
         return this;
     }
 

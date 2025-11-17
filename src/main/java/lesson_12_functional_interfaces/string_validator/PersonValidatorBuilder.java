@@ -20,15 +20,15 @@ public class PersonValidatorBuilder {
 
     public PersonValidatorBuilder withDefaultNameRules() {
         nameBuilder
-                .noEmpty()
                 .minLength(2);
         return this;
     }
 
     public PersonValidatorBuilder withDefaultAgeRules() {
         ageBuilder
-                .noEmpty()
-                .onlyDigits();
+                .onlyDigits()
+                .maxLength(3)
+                .maxAge(130);
         return this;
     }
 

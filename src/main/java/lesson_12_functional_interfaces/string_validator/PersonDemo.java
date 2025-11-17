@@ -15,13 +15,14 @@ public class PersonDemo {
                 new Person("A", "20"),
                 new Person("Bob", "abc"),
                 new Person("Clara", "200"),
-                new Person("Dana", "25")
+                new Person("Dana", "25"),
+                new Person("Marcus", "")
         );
 
         List<PersonalValidationResult> results = validator.validateAll(persons);
 
         for (PersonalValidationResult result : results) {
-            System.out.println("Prüfe: " + result.person());
+            System.out.println("\nPrüfe: " + result.person());
             if (result.isValid())
                 System.out.println(" OK");
             else {

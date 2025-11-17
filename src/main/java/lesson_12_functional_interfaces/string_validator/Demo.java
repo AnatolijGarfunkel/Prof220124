@@ -8,7 +8,6 @@ public class Demo {
 
         StringValidator validator = new StringValidator();
 
-        validator.addRule(StringRules.notEmpty());
         validator.addRule(StringRules.minLength(3));
         validator.addRule(StringRules.onlyDigits());
         validator.addRule(StringRules.maxLength(5));

@@ -18,29 +18,13 @@ public class PersonValidator {
     public List<ValidationError> validate(Person person) {
         List<ValidationError> result = new ArrayList<>();
 
-        StringValidator nameValidator = StringValidatorBuilder.create()
-                .noEmpty()
-                .minLength(2)
-                .build();
-
         List<String> nameErrors = nameValidator.validate(person.name());
         for (String err : nameErrors)
             result.add(new ValidationError("name: " + person.name(), err));
 
-        StringValidator ageValidator = StringValidatorBuilder.create()
-                .noEmpty()
-                .onlyDigits()
-                .build();
-
         List<String> ageErrors = ageValidator.validate(person.age());
         for (String data : ageErrors)
             result.add(new ValidationError("age: " + person.age(), data));
-
-        if (ageErrors.isEmpty()) {
-            int age = Integer.parseInt(person.age());
-            if (age < 0 || age > 130)
-                result.add(new ValidationError("age: " + person.age(), "Alter muss zwischen 0 ung 130 liegen."));
-        }
 
         return result;
     }
