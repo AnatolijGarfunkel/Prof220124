@@ -7,7 +7,7 @@ public class PersonDemo {
     public static void main(String[] args) {
 
         PersonValidator validator = PersonValidatorBuilder.create()
-                .withDefaultNameRules()
+                .configureName(builder -> builder.minLength(2).beginsWithUp())
                 .withDefaultAgeRules()
                 .build();
 

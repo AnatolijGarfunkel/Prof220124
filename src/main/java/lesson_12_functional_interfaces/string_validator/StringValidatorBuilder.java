@@ -33,8 +33,60 @@ public class StringValidatorBuilder {
         return this;
     }
 
+    public StringValidatorBuilder beginsWithUp() {
+        validator.addRule(StringRules.beginsWithUp());
+        return this;
+    }
+
     public StringValidator build() {
         return validator;
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
