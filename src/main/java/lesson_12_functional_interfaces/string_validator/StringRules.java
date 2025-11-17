@@ -35,6 +35,10 @@ public class StringRules {
             return "Wert lässt sich nicht in ein Integer umwandeln";
         };
     }
+
+    public static StringRule beginsWithUp() {
+        return value -> !Character.isUpperCase(value.charAt(0)) ? "Wer beginnt nicht mit einem Großbuchstaben" : null;
+    }
 }
 
 
