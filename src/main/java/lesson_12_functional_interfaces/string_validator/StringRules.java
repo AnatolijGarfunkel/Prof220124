@@ -2,14 +2,6 @@ package lesson_12_functional_interfaces.string_validator;
 
 public class StringRules {
 
-    public static StringRule notEmpty() {
-        return value -> {
-            if (value.isEmpty())
-                return "Wert darf nicht leer sein";
-            return null;
-        };
-    }
-
     public static StringRule minLength(int length) {
         return value -> {
             if (value.length() < length)
@@ -34,4 +26,64 @@ public class StringRules {
             return null;
         };
     }
+
+    public static StringRule maxAge(int age) {
+        return value -> {
+            if (onlyDigits().validateString(value) == null) {
+                return Integer.parseInt(value) < 0 || Integer.parseInt(value) > age ? "Wert liegt nicht im Bereich zw. 0 und " + age : null;
+            }
+            return "Wert lässt sich nicht in ein Integer umwandeln";
+        };
+    }
+
+    public static StringRule beginsWithUp() {
+        return value -> !Character.isUpperCase(value.charAt(0)) ? "Wert beginnt nicht mit einem Großbuchstaben" : null;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

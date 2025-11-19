@@ -1,21 +1,21 @@
-package lesson_12_functional_interfaces;
+package lesson_12_functional_interfaces.first_task;
 
 import java.util.*;
 
-public class FieldValidatorTester {
+public class FT_FieldValidatorTester {
 
     static final String ERR_FIELD_NULL = "Feld ist null";
 
 
     public static void main(String[] args) {
-        Map<String, List<FieldValidator>> rules = new HashMap<>();
+        Map<String, List<FT_FieldValidator>> rules = new HashMap<>();
 
-        FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("Fehler - darf nicht leer sein");
-        FieldValidator minLength = minLengthN(5);
-        FieldValidator maxLength = maxLengthN(10);
-        FieldValidator containsAtSign = email -> email.contains("@") ? Optional.empty() : Optional.of("Fehler - enthält kein @ Zeichen");
-        FieldValidator containsDotAfterAt = email -> email.contains("@.") ? Optional.of("Fehler - nach \"@\" existiert ein \".\"") : Optional.empty();
-        FieldValidator hasDigit = value -> {
+        FT_FieldValidator notEmpty = text -> !text.isEmpty() ? Optional.empty() : Optional.of("Fehler - darf nicht leer sein");
+        FT_FieldValidator minLength = minLengthN(5);
+        FT_FieldValidator maxLength = maxLengthN(10);
+        FT_FieldValidator containsAtSign = email -> email.contains("@") ? Optional.empty() : Optional.of("Fehler - enthält kein @ Zeichen");
+        FT_FieldValidator containsDotAfterAt = email -> email.contains("@.") ? Optional.of("Fehler - nach \"@\" existiert ein \".\"") : Optional.empty();
+        FT_FieldValidator hasDigit = value -> {
             char[] chars = value.toCharArray();
             for (char c : chars) {
                 if (Character.isDigit(c))
@@ -23,15 +23,15 @@ public class FieldValidatorTester {
             }
             return Optional.of("Fehler - enthält keine Ziffer");
         };
-        FieldValidator hasUppercase = pass -> {
+        FT_FieldValidator hasUppercase = pass -> {
             char[] chars = pass.toCharArray();
             for (char c : chars)
                 if (Character.isUpperCase(c))
                     return Optional.empty();
             return Optional.of("Fehler - keine Buchstaben im oberen Register");
         };
-        FieldValidator startsWithUppercase = name -> Character.isUpperCase(name.charAt(0)) ? Optional.empty() : Optional.of("Fehler - fängt klein an");
-        FieldValidator lettersOnly = name -> {
+        FT_FieldValidator startsWithUppercase = name -> Character.isUpperCase(name.charAt(0)) ? Optional.empty() : Optional.of("Fehler - fängt klein an");
+        FT_FieldValidator lettersOnly = name -> {
             char[] chars = name.toCharArray();
             for (char c : chars)
                 if (Character.isDigit(c))
@@ -39,7 +39,7 @@ public class FieldValidatorTester {
             return Optional.empty();
         };
 
-        List<FieldValidator> nameRules = List.of(
+        List<FT_FieldValidator> nameRules = List.of(
                 notEmpty,
                 minLength,
                 maxLength,
@@ -47,18 +47,18 @@ public class FieldValidatorTester {
                 lettersOnly
         );
 
-        List<FieldValidator> emailRules = List.of(
+        List<FT_FieldValidator> emailRules = List.of(
                 notEmpty,
                 containsAtSign,
                 containsDotAfterAt
         );
 
-        List<FieldValidator> passRules = new ArrayList<>(List.of(
+        List<FT_FieldValidator> passRules = new ArrayList<>(List.of(
                 notEmpty,
                 hasDigit
         ));
 
-        Map<String, List<FieldValidator>> fieldRules = new LinkedHashMap<>(
+        Map<String, List<FT_FieldValidator>> fieldRules = new LinkedHashMap<>(
                 Map.of(
                         "name", nameRules,
                         "email", emailRules,
@@ -71,34 +71,34 @@ public class FieldValidatorTester {
         data.put(null, "marcusemail.de");
         data.put("password", "marcus23");
 
-        Map<String, List<ValidationResult>> validated = validateAllFields(data, fieldRules);
+        Map<String, List<FT_ValidationResult>> validated = validateAllFields(data, fieldRules);
         System.out.println(validated);
 
     }
 
-    private static FieldValidator maxLengthN(int max) {
+    private static FT_FieldValidator maxLengthN(int max) {
         return text -> text.length() <= max ? Optional.empty() : Optional.of("Fehler - max. " + max + " Zeichen");
     }
 
-    private static FieldValidator minLengthN(int min) {
+    private static FT_FieldValidator minLengthN(int min) {
         return text -> text.length() >= min ? Optional.empty() : Optional.of("Fehler - mind. " + min + " Zeichen");
     }
 
-    public static List<ValidationResult> validateField(String value, List<FieldValidator> validators) {
-        List<ValidationResult> errors = new ArrayList<>();
+    public static List<FT_ValidationResult> validateField(String value, List<FT_FieldValidator> validators) {
+        List<FT_ValidationResult> errors = new ArrayList<>();
         String key = "key";
 
-        Optional<ValidationResult> precheckField = precheckField(key, value, validators);
+        Optional<FT_ValidationResult> precheckField = precheckField(key, value, validators);
         if (precheckField.isPresent()) {
             errors.add(precheckField.get());
             return errors;
         }
 
-        for (FieldValidator validator : validators) {
+        for (FT_FieldValidator validator : validators) {
             if (validator == null) {
-                errors.add(new ValidationResult(
+                errors.add(new FT_ValidationResult(
                         key,
-                        ValidationStatus.VALIDATOR_NULL,
+                        FT_ValidationStatus.VALIDATOR_NULL,
                         "Ein Validator für Schlüssel '" + key + "' ist null"
                 ));
                 continue;
@@ -106,9 +106,9 @@ public class FieldValidatorTester {
 
             Optional<String> message = validator.validate(value);
             message.ifPresent(string -> errors.add(
-                    new ValidationResult(
+                    new FT_ValidationResult(
                             key,
-                            ValidationStatus.RULE_VIOLATION,
+                            FT_ValidationStatus.RULE_VIOLATION,
                             string
 
                     )
@@ -118,42 +118,42 @@ public class FieldValidatorTester {
         return errors;
     }
 
-    public static Map<String, List<ValidationResult>> validateAllFields(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
-        Map<String, List<ValidationResult>> log = new LinkedHashMap<>();
-        List<ValidationResult> validationResults = new ArrayList<>();
+    public static Map<String, List<FT_ValidationResult>> validateAllFields(Map<String, String> data, Map<String, List<FT_FieldValidator>> rules) {
+        Map<String, List<FT_ValidationResult>> log = new LinkedHashMap<>();
+        List<FT_ValidationResult> FTValidationResults = new ArrayList<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
 
             if (key == null) {
-                validationResults.add(new ValidationResult(
+                FTValidationResults.add(new FT_ValidationResult(
                         "Schlüssel",
-                        ValidationStatus.KEY_NULL,
+                        FT_ValidationStatus.KEY_NULL,
                         "Schlüssel ist null"
                 ));
                 continue;
             }
 
-            List<FieldValidator> validators = rules.get(key);
+            List<FT_FieldValidator> validators = rules.get(key);
             String value = pair.getValue();
 
-            validationResults.addAll(validateField(value, validators));
-            log.put(key, validationResults);
+            FTValidationResults.addAll(validateField(value, validators));
+            log.put(key, FTValidationResults);
         }
 
         return log;
     }
 
-    private static Optional<ValidationResult> precheckField(
+    private static Optional<FT_ValidationResult> precheckField(
             String key,
             String value,
-            List<FieldValidator> validators
+            List<FT_FieldValidator> validators
     ) {
         if (value == null) {
             return Optional.of(
-                    new ValidationResult(
+                    new FT_ValidationResult(
                             key,
-                            ValidationStatus.FIELD_NULL,
+                            FT_ValidationStatus.FIELD_NULL,
                             "Schlüssel '" + key + "' ist null"
                     )
             );
@@ -161,9 +161,9 @@ public class FieldValidatorTester {
 
         if (validators == null) {
             return Optional.of(
-                    new ValidationResult(
+                    new FT_ValidationResult(
                             key,
-                            ValidationStatus.VALIDATORS_NULL,
+                            FT_ValidationStatus.VALIDATORS_NULL,
                             "Keine Validator-Liste für Schlüssel '" + key + "'"
                     )
             );
@@ -171,9 +171,9 @@ public class FieldValidatorTester {
 
         if (validators.isEmpty()) {
             return Optional.of(
-                    new ValidationResult(
+                    new FT_ValidationResult(
                             key,
-                            ValidationStatus.VALIDATORS_EMPTY,
+                            FT_ValidationStatus.VALIDATORS_EMPTY,
                             "Validator-Liste für Schlüssel '" + key + "' ist leer"
                     )
             );
@@ -182,38 +182,38 @@ public class FieldValidatorTester {
         return Optional.empty();
     }
 
-    public static Map<String, ValidationResult> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
-        Map<String, ValidationResult> log = new LinkedHashMap<>();
+    public static Map<String, FT_ValidationResult> validateFirstErrorPerField(Map<String, String> data, Map<String, List<FT_FieldValidator>> rules) {
+        Map<String, FT_ValidationResult> log = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
 
             if (key == null) {
                 log.put("NULL-Schlüssel",
-                        new ValidationResult(
+                        new FT_ValidationResult(
                                 "Schlüssel",
-                                ValidationStatus.KEY_NULL,
+                                FT_ValidationStatus.KEY_NULL,
                                 "Schlüssel ist null"
                         )
                 );
                 continue;
             }
 
-            List<FieldValidator> validators = rules.get(key);
+            List<FT_FieldValidator> validators = rules.get(key);
             String value = pair.getValue();
 
-            Optional<ValidationResult> precheckField = precheckField(key, value, validators);
+            Optional<FT_ValidationResult> precheckField = precheckField(key, value, validators);
             if (precheckField.isPresent()) {
                 log.put(key, precheckField.get());
                 continue;
             }
 
-            for (FieldValidator validator : validators) {
+            for (FT_FieldValidator validator : validators) {
                 if (validator == null) {
                     log.put(key,
-                            new ValidationResult(
+                            new FT_ValidationResult(
                                     key,
-                                    ValidationStatus.VALIDATOR_NULL,
+                                    FT_ValidationStatus.VALIDATOR_NULL,
                                     "Ein Validator für Schlüssel '" + key + "' ist null"
                             ));
                     break;
@@ -222,8 +222,8 @@ public class FieldValidatorTester {
                 Optional<String> message = validator.validate(value);
                 if (message.isPresent()) {
                     log.put(key,
-                            new ValidationResult(
-                            key, ValidationStatus.RULE_VIOLATION, message.get())
+                            new FT_ValidationResult(
+                            key, FT_ValidationStatus.RULE_VIOLATION, message.get())
                     );
                     break;
                 }
@@ -232,14 +232,14 @@ public class FieldValidatorTester {
         return log;
     }
 
-    public static boolean isFormValid(Map<String, String> data, Map<String, List<FieldValidator>> rules) {
+    public static boolean isFormValid(Map<String, String> data, Map<String, List<FT_FieldValidator>> rules) {
 
         for (Map.Entry<String, String> pair : data.entrySet()) {
             String key = pair.getKey();
             String value = pair.getValue();
-            List<FieldValidator> validators = rules.get(key);
+            List<FT_FieldValidator> validators = rules.get(key);
 
-            for (FieldValidator validator : validators) {
+            for (FT_FieldValidator validator : validators) {
                 Optional<String> result = validator.validate(value);
                 if (result.isPresent())
                     return false;
@@ -249,9 +249,9 @@ public class FieldValidatorTester {
         return true;
     }
 
-    public static FieldValidator combine(List<FieldValidator> validators) {
+    public static FT_FieldValidator combine(List<FT_FieldValidator> validators) {
         return value -> {
-            for (FieldValidator validator : validators) {
+            for (FT_FieldValidator validator : validators) {
                 Optional<String> result = validator.validate(value);
                 if (result.isPresent())
                     return result;
@@ -260,7 +260,7 @@ public class FieldValidatorTester {
         };
     }
 
-    public static FieldValidator nullSafe(FieldValidator original, String messageOnNull) {
+    public static FT_FieldValidator nullSafe(FT_FieldValidator original, String messageOnNull) {
         return value -> value == null ? Optional.of(messageOnNull) : original.validate(value);
     }
 }

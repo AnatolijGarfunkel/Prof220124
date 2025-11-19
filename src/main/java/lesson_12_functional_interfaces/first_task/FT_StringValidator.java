@@ -1,9 +1,9 @@
-package lesson_12_functional_interfaces;
+package lesson_12_functional_interfaces.first_task;
 
 import java.util.Optional;
 
 @FunctionalInterface
-public interface StringValidator {
+public interface FT_StringValidator {
 
     Optional<String> validate(String text);
 }

@@ -1,34 +1,33 @@
-package lesson_12_functional_interfaces.string_validator;
+package lesson_12_functional_interfaces.person_validator;
+
+import lesson_12_functional_interfaces.string_validator.StringValidator;
+import lesson_12_functional_interfaces.string_validator.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PersonValidator {
+
+    private final StringValidator nameValidator;
+
+    private final StringValidator ageValidator;
+
+    public PersonValidator(StringValidator nameValidator, StringValidator ageValidator) {
+        this.nameValidator = Objects.requireNonNull(nameValidator);
+        this.ageValidator = Objects.requireNonNull(ageValidator);
+    }
 
     public List<ValidationError> validate(Person person) {
         List<ValidationError> result = new ArrayList<>();
 
-        StringValidator nameValidator = new StringValidator();
-        nameValidator.addRule(StringRules.notEmpty());
-        nameValidator.addRule(StringRules.minLength(2));
-
         List<String> nameErrors = nameValidator.validate(person.name());
-        for (String data : nameErrors)
-            result.add(new ValidationError(person.name(), data));
-
-        StringValidator ageValidator = new StringValidator();
-        ageValidator.addRule(StringRules.notEmpty());
-        ageValidator.addRule(StringRules.onlyDigits());
+        for (String err : nameErrors)
+            result.add(new ValidationError("name: " + person.name(), err));
 
         List<String> ageErrors = ageValidator.validate(person.age());
         for (String data : ageErrors)
-            result.add(new ValidationError(person.age(), data));
-
-        if (ageErrors.isEmpty()) {
-            int age = Integer.parseInt(person.age());
-            if (age < 0 || age > 130)
-                result.add(new ValidationError(person.age(), "Alter muss zwischen 0 ung 130 liegen."));
-        }
+            result.add(new ValidationError("age: " + person.age(), data));
 
         return result;
     }
