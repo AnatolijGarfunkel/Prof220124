@@ -1,4 +1,4 @@
-package lesson_12_functional_interfaces.rule_set_builder;
+package lesson_12_functional_interfaces.field_dsl;
 
 import java.util.ArrayList;
 import java.util.List;

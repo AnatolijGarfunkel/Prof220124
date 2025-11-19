@@ -3,11 +3,11 @@ package lesson_12_functional_interfaces.first_task;
 import java.util.Optional;
 
 @FunctionalInterface
-public interface FieldValidator {
+public interface FT_FieldValidator {
 
     Optional<String> validate(String value);
 
-    default FieldValidator and(FieldValidator other) {
+    default FT_FieldValidator and(FT_FieldValidator other) {
         return value -> {
             Optional<String> thisOptional = this.validate(value);
             if (thisOptional.isPresent())
@@ -16,9 +16,9 @@ public interface FieldValidator {
         };
     }
 
-    default FieldValidator or(FieldValidator other) {
+    default FT_FieldValidator or(FT_FieldValidator other) {
         return value -> {
-            if (FieldValidator.this.validate(value).isEmpty() || other.validate(value).isEmpty())
+            if (FT_FieldValidator.this.validate(value).isEmpty() || other.validate(value).isEmpty())
                 return Optional.empty();
             return Optional.of("Fehler");
         };

@@ -1,4 +1,7 @@
-package lesson_12_functional_interfaces.string_validator;
+package lesson_12_functional_interfaces.person_validator;
+
+import lesson_12_functional_interfaces.string_validator.StringValidator;
+import lesson_12_functional_interfaces.string_validator.StringValidatorBuilder;
 
 public class PersonValidatorBuilder {
 

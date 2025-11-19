@@ -1,6 +1,6 @@
 package lesson_12_functional_interfaces.first_task;
 
-public enum ValidationStatus {
+public enum FT_ValidationStatus {
 
     OK,
     KEY_NULL,

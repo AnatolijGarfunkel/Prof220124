@@ -1,6 +1,6 @@
 package lesson_12_functional_interfaces.rule_set_builder;
 
-import lesson_12_functional_interfaces.string_validator.Person;
+import lesson_12_functional_interfaces.person_validator.Person;
 
 public class PersonRules {
 

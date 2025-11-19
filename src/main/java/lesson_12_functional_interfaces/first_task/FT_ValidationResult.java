@@ -1,14 +1,14 @@
 package lesson_12_functional_interfaces.first_task;
 
-public record ValidationResult(
+public record FT_ValidationResult(
 
         String key,
 
-        ValidationStatus status,
+        FT_ValidationStatus status,
 
         String message
 ) {
     public boolean isOk() {
-        return status == ValidationStatus.OK;
+        return status == FT_ValidationStatus.OK;
     }
 }

@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class StringValidatorTester {
+public class FT_StringValidatorTester {
 
     public static void main(String[] args) {
 
-        StringValidator notEmpty = text -> text.isEmpty() ? Optional.of("Leer") : Optional.empty();
-        StringValidator beginsWithBig = text -> !Character.isUpperCase(text.charAt(0)) ? Optional.of("faengt mit klein") : Optional.empty();
-        StringValidator mitFive = text -> text.length() >= 5 ? Optional.of("mehr als 5") : Optional.empty();
-        StringValidator conBang = text -> text.contains("!") ? Optional.of("enthaelt !") : Optional.empty();
+        FT_StringValidator notEmpty = text -> text.isEmpty() ? Optional.of("Leer") : Optional.empty();
+        FT_StringValidator beginsWithBig = text -> !Character.isUpperCase(text.charAt(0)) ? Optional.of("faengt mit klein") : Optional.empty();
+        FT_StringValidator mitFive = text -> text.length() >= 5 ? Optional.of("mehr als 5") : Optional.empty();
+        FT_StringValidator conBang = text -> text.contains("!") ? Optional.of("enthaelt !") : Optional.empty();
 
         String text = "wuppertal!";
-        List<StringValidator> validators = List.of(
+        List<FT_StringValidator> validators = List.of(
                 notEmpty,
                 beginsWithBig,
                 mitFive,
                 conBang
         );
 
-        StringValidator combined = combine(validators);
+        FT_StringValidator combined = combine(validators);
 
         Optional<String> optional = validateAll(validators, text);
         if (optional.isEmpty())
@@ -35,8 +35,8 @@ public class StringValidatorTester {
         System.out.println("combined: " + combined.validate(text));
     }
 
-    public static Optional<String> validateAll(List<StringValidator> validators, String text) {
-        for (StringValidator validator : validators) {
+    public static Optional<String> validateAll(List<FT_StringValidator> validators, String text) {
+        for (FT_StringValidator validator : validators) {
             Optional<String> optional = validator.validate(text);
             if (optional.isPresent())
                 return optional;
@@ -44,10 +44,10 @@ public class StringValidatorTester {
         return Optional.empty();
     }
 
-    public static List<String> collectErrors(List<StringValidator> validators, String text) {
+    public static List<String> collectErrors(List<FT_StringValidator> validators, String text) {
         List<String> errorsList = new ArrayList<>();
 
-        for (StringValidator validator : validators) {
+        for (FT_StringValidator validator : validators) {
             Optional<String> optional = validator.validate(text);
             if (optional.isPresent())
                 errorsList.add(String.valueOf(optional));
@@ -56,9 +56,9 @@ public class StringValidatorTester {
         return errorsList;
     }
 
-    public static StringValidator combine(List<StringValidator> validators) {
+    public static FT_StringValidator combine(List<FT_StringValidator> validators) {
         return text -> {
-            for (StringValidator validator : validators) {
+            for (FT_StringValidator validator : validators) {
                 Optional<String> optional = validator.validate(text);
                 if (optional.isPresent())
                     return optional;
