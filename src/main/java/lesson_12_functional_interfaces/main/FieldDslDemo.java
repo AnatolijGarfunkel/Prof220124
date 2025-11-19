@@ -1,5 +1,8 @@
-package lesson_12_functional_interfaces.field_dsl;
+package lesson_12_functional_interfaces.main;
 
+import lesson_12_functional_interfaces.field_dsl.FieldRuleSet;
+import lesson_12_functional_interfaces.field_dsl.FieldRuleSetBuilder;
+import lesson_12_functional_interfaces.field_dsl.FieldValidatorError;
 import lesson_12_functional_interfaces.person_validator.Person;
 
 import java.util.List;
@@ -25,7 +28,8 @@ public class FieldDslDemo {
                 new Person("Bob", "abc"),
                 new Person("Clara", "200"),
                 new Person("marcus", ""),
-                new Person("Dana", "25")
+                new Person("Dana", "25"),
+                new Person(null, "")
         );
 
         for (Person person : persons) {
