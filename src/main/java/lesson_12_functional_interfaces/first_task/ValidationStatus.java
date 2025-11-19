@@ -1,4 +1,4 @@
-package lesson_12_functional_interfaces;
+package lesson_12_functional_interfaces.first_task;
 
 public enum ValidationStatus {
 
