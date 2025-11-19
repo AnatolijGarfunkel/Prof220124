@@ -37,7 +37,7 @@ public class StringRules {
     }
 
     public static StringRule beginsWithUp() {
-        return value -> !Character.isUpperCase(value.charAt(0)) ? "Wer beginnt nicht mit einem Großbuchstaben" : null;
+        return value -> !Character.isUpperCase(value.charAt(0)) ? "Wert beginnt nicht mit einem Großbuchstaben" : null;
     }
 }
 

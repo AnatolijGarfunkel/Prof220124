@@ -27,6 +27,11 @@ public class FieldRuleBuilder<T> {
         return this;
     }
 
+    public FieldRuleBuilder<T> maxLength(int max) {
+        stringValidatorBuilder.maxLength(max);
+        return this;
+    }
+
     public FieldRuleBuilder<T> onlyDigits() {
         stringValidatorBuilder.onlyDigits();
         return this;
@@ -36,6 +41,12 @@ public class FieldRuleBuilder<T> {
         stringValidatorBuilder.maxAge(max);
         return this;
     }
+
+    public FieldRuleBuilder<T> beginWithUp() {
+        stringValidatorBuilder.beginsWithUp();
+        return this;
+    }
+
 
     public FieldRule<T> build() {
         StringValidator validator = stringValidatorBuilder.build();
