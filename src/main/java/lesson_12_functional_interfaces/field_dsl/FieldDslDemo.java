@@ -28,14 +28,14 @@ public class FieldDslDemo {
                 new Person("Dana", "25")
         );
 
-        for (Person p : persons) {
-            System.out.println("Prüfe: " + p);
-            List<FieldValidatorError> errors = rules.validate(p);
+        for (Person person : persons) {
+            System.out.println("Prüfe: " + person);
+            List<FieldValidatorError> errors = rules.validate(person);
             if (errors.isEmpty()) {
                 System.out.println("  OK");
             } else {
-                for (FieldValidatorError e : errors) {
-                    System.out.println("  Feld '" + e.fieldName() + "': " + e.message());
+                for (FieldValidatorError error : errors) {
+                    System.out.println("  Feld '" + error.fieldName() + "': " + error.message());
                 }
             }
             System.out.println();

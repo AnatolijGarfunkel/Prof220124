@@ -22,9 +22,9 @@ public class Demo {
                 new Person("Dana", "25")     // sollte gültig sein
         );
 
-        for (Person p : persons) {
-            System.out.println("Prüfe: " + p);
-            List<String> errors = ruleSet.validate(p);
+        for (Person person : persons) {
+            System.out.println("Prüfe: " + person);
+            List<String> errors = ruleSet.validate(person);
             if (errors.isEmpty()) {
                 System.out.println("  OK");
             } else {

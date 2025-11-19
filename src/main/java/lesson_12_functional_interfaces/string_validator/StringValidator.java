@@ -23,7 +23,7 @@ public class StringValidator {
         }
 
         for (StringRule rule : rules) {
-            String validated = rule.validate(value);
+            String validated = rule.validateString(value);
             if (validated != null)
                 result.add(validated);
         }

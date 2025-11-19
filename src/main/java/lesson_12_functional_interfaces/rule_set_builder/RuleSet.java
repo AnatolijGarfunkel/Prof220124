@@ -11,11 +11,11 @@ public class RuleSet<T> {
         rules.add(rule);
     }
 
-    public List<String> validate(T value) {
+    public List<String> validate(T object) {
         List<String> errors = new ArrayList<>();
 
         for (Rule<T> rule : rules) {
-            String error = rule.validate(value);
+            String error = rule.validateObject(object);
             if (error != null)
                 errors.add(error);
         }

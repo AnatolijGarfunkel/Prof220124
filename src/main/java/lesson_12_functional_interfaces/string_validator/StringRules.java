@@ -29,7 +29,7 @@ public class StringRules {
 
     public static StringRule maxAge(int age) {
         return value -> {
-            if (onlyDigits().validate(value) == null) {
+            if (onlyDigits().validateString(value) == null) {
                 return Integer.parseInt(value) < 0 || Integer.parseInt(value) > age ? "Wert liegt nicht im Bereich zw. 0 und " + age : null;
             }
             return "Wert lässt sich nicht in ein Integer umwandeln";
