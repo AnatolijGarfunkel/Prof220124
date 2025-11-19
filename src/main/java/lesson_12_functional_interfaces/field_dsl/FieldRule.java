@@ -24,9 +24,9 @@ public class FieldRule<T>{
         return fieldName;
     }
 
-    public List<FieldValidatorError> validate(T value) {
+    public List<FieldValidatorError> validateObject(T object) {
         List<FieldValidatorError> result = new ArrayList<>();
-        String fieldValue = extractor.apply(value);
+        String fieldValue = extractor.apply(object);
         List<String> errors = stringValidator.validate(fieldValue);
 
         for (String error : errors)

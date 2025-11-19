@@ -15,7 +15,7 @@ public class FieldRuleSet<T> {
         List<FieldValidatorError> allErrors = new ArrayList<>();
 
         for (FieldRule<T> rule : fieldRules) {
-            List<FieldValidatorError> errors = rule.validate(value);
+            List<FieldValidatorError> errors = rule.validateObject(value);
             allErrors.addAll(errors);
         }
 
