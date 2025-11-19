@@ -40,8 +40,8 @@ public class StringValidatorBuilder {
         return this;
     }
 
-    public StringValidatorBuilder configure(Consumer<StringValidator> consumer) {
-        consumer.accept(validator);
+    public StringValidatorBuilder configure(StringRule rule) {
+        validator.addRule(rule);
         return this;
     }
 
