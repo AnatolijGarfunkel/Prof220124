@@ -40,6 +40,11 @@ public class StringValidatorBuilder {
         return this;
     }
 
+    public StringValidatorBuilder endsWithLow() {
+        validator.addRule(StringRules.endsWithLow());
+        return this;
+    }
+
     public StringValidatorBuilder configure(Function<String, String> rule) {
         validator.addRule(rule);
         return this;

@@ -13,21 +13,21 @@ public class StringValidator {
     }
 
     public List<String> validate(String value) {
-        List<String> result = new ArrayList<>();
+        List<String> errors = new ArrayList<>();
         if (value == null) {
-            result.add("Wert darf nicht null sein.");
-            return result;
+            errors.add("Wert darf nicht null sein.");
+            return errors;
         }
         if (value.isEmpty()) {
-            result.add("Wert darf nicht leer sein");
-            return result;
+            errors.add("Wert darf nicht leer sein");
+            return errors;
         }
 
         for (Function<String, String> rule : rules) {
-            String validated = rule.apply(value);
-            if (validated != null)
-                result.add(validated);
+            String error = rule.apply(value);
+            if (error != null)
+                errors.add(error);
         }
-        return result;
+        return errors;
     }
 }
