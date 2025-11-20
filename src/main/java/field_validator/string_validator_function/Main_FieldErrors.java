@@ -35,8 +35,9 @@ public class Main_FieldErrors {
             String field;
             String value;
 
-            field = Person.class.getRecordComponents()[0].getName();
+            field = "name";
             value = person.name();
+
             List<String> nameErrors = nameValidator.validate(value);
             FieldErrors nameMessages = new FieldErrors(field, value, nameErrors);
 
@@ -48,8 +49,9 @@ public class Main_FieldErrors {
                     System.out.println(nameMessages.field() + ": " + nameMessages.value() + ": " + message);
             }
 
-            field = Person.class.getRecordComponents()[1].getName();
+            field = "age";
             value = person.age();
+
             List<String> ageErrors = ageValidator.validate(value);
             FieldErrors ageMessages = new FieldErrors(field, value, ageErrors);
 
