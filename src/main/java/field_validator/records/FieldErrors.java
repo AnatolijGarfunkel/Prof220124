@@ -1,4 +1,6 @@
 package field_validator.records;
 
-public record FieldErrors(String field, String value, String message) {
+import java.util.List;
+
+public record FieldErrors(String field, String value, List<String> messages) {
 }
