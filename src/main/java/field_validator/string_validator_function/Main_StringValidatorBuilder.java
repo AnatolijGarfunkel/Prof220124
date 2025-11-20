@@ -6,7 +6,7 @@ import java.util.Map;
 
 import static field_validator.string_validator.StringRules.onlyDigits;
 
-public class StringValidatorBuilder_Main {
+public class Main_StringValidatorBuilder {
 
     public static void main(String[] args) {
 

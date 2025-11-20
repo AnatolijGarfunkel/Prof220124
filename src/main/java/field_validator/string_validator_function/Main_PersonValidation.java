@@ -4,7 +4,7 @@ import field_validator.records.Person;
 
 import java.util.List;
 
-public class PersonValidation_Demo {
+public class Main_PersonValidation {
 
     public static void main(String[] args) {
 
