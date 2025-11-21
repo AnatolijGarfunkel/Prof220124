@@ -21,6 +21,8 @@ public class ObjectFieldValidator<T> {
     }
 
     public FieldErrors validateObject(T object) {
+        if (object == null)
+            return new FieldErrors(field, null, List.of("Object ist null."));
         String value = extractor.apply(object);
         List<String> errors = validator.validate(value);
         FieldErrors fieldErrors = new FieldErrors(field, value, errors);
