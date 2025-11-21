@@ -4,19 +4,19 @@ import field_validator.string_validator_function.StringValidator;
 
 import java.util.function.Function;
 
-public class ObjectFieldValidatorBuilder<T> {
+public class ObjectFieldValidatorSetBuilder<T> {
 
     private final ObjectFieldValidatorSet<T> objectFieldValidatorsSet = new ObjectFieldValidatorSet<>();
 
-    private ObjectFieldValidatorBuilder() {
+    private ObjectFieldValidatorSetBuilder() {
         //
     }
 
-    public static <T> ObjectFieldValidatorBuilder<T> create() {
-        return new ObjectFieldValidatorBuilder<>();
+    public static <T> ObjectFieldValidatorSetBuilder<T> create() {
+        return new ObjectFieldValidatorSetBuilder<>();
     }
 
-    public ObjectFieldValidatorBuilder<T> field(String field, Function<T, String> extractor, StringValidator validator) {
+    public ObjectFieldValidatorSetBuilder<T> field(String field, Function<T, String> extractor, StringValidator validator) {
         ObjectFieldValidator<T> objectFieldValidator = new ObjectFieldValidator<>(field, extractor, validator);
         objectFieldValidatorsSet.addObjectFieldValidator(objectFieldValidator);
         return this;
