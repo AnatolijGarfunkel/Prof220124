@@ -13,14 +13,14 @@ public class Main_PersonValidation {
 
     public static void main(String[] args) {
 
-        List<Person> persons = List.of(
-                new Person("Clara", "200"),
-                new Person("marcus", null),
-                new Person("DaNa", "25"),
-                new Person(null, ""),
-                new Person("a", "2020"),
-                new Person("BOb", "abc")
-        );
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person("Clara", "200"));
+        persons.add(new Person("marcus", null));
+        persons.add(new Person("DaNa", "25"));
+        persons.add(new Person(null, ""));
+        persons.add(new Person("a", "2020"));
+        persons.add(new Person("Martin", "37"));
+        persons.add(new Person("BOb", "abc"));
 
         StringValidator nameValidator = new StringValidator();
         nameValidator.addRule(StringRules.beginsWithUp());
@@ -48,6 +48,7 @@ public class Main_PersonValidation {
             value = person.age();
             List<String> ageErrors = ageValidator.validate(value);
             FieldErrors ageFieldErrors = new FieldErrors(field, value, ageErrors);
+
             List<FieldErrors> fieldErrors = List.of(nameFieldErrors, ageFieldErrors);
             personsErrors.add(new Person_Errors(person, fieldErrors));
         }

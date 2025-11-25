@@ -2,23 +2,25 @@ package field_validator.string_validator_function.main;
 
 import field_validator.records.FieldErrors;
 import field_validator.records.Person;
+import field_validator.records.Person_Errors;
 import field_validator.string_validator_function.StringValidator;
 import field_validator.string_validator_function.StringValidatorBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main_FieldErrors {
 
     public static void main(String[] args) {
 
-        List<Person> persons = List.of(
-                new Person("Clara", "200"),
-                new Person("marcus", null),
-                new Person("DaNa", "25"),
-                new Person(null, ""),
-                new Person("a", "2020"),
-                new Person("BOb", "abc")
-        );
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person("Clara", "200"));
+        persons.add(new Person("marcus", null));
+        persons.add(new Person("DaNa", "25"));
+        persons.add(new Person(null, ""));
+        persons.add(new Person("a", "2020"));
+        persons.add(new Person("Martin", "37"));
+        persons.add(new Person("BOb", "abc"));
 
         StringValidator nameValidator = StringValidatorBuilder.create()
                 .configure(value -> value.length() < 2 ? "Wert muss mindestens " + 2 + " Zeichen lang sein." : null)
@@ -32,8 +34,9 @@ public class Main_FieldErrors {
                 .maxAge(130)
                 .build();
 
+        List<Person_Errors> personsErrors = new ArrayList<>();
+
         for (Person person : persons) {
-            System.out.println("\n" + person);
             String field;
             String value;
 
@@ -41,30 +44,20 @@ public class Main_FieldErrors {
             value = person.name();
 
             List<String> nameErrors = nameValidator.validate(value);
-            FieldErrors nameMessages = new FieldErrors(field, value, nameErrors);
-
-            if (nameMessages.messages().isEmpty())
-                System.out.println(nameMessages.field() + ": " + nameMessages.value() + ": OK");
-            else {
-                List<String> messages = nameMessages.messages();
-                for (String message : messages)
-                    System.out.println(nameMessages.field() + ": " + nameMessages.value() + ": " + message);
-            }
+            FieldErrors nameFieldErrors = new FieldErrors(field, value, nameErrors);
 
             field = "age";
             value = person.age();
 
             List<String> ageErrors = ageValidator.validate(value);
-            FieldErrors ageMessages = new FieldErrors(field, value, ageErrors);
+            FieldErrors ageFieldErrors = new FieldErrors(field, value, ageErrors);
 
-            if (ageMessages.messages().isEmpty())
-                System.out.println(ageMessages.field() + ":  " + ageMessages.value() + ": OK");
-            else {
-                List<String> messages = ageMessages.messages();
-                for (String message : messages)
-                    System.out.println(ageMessages.field() + ":  " + ageMessages.value() + ": " + message);
-            }
+            List<FieldErrors> fieldErrors = List.of(nameFieldErrors, ageFieldErrors);
+            personsErrors.add(new Person_Errors(person, fieldErrors));
+        }
 
+        for (Person_Errors personErrors : personsErrors) {
+            personErrors.print();
         }
     }
 }

@@ -1,30 +1,26 @@
 package field_validator.object_field_validator.main;
 
+import field_validator.object_field_validator.AutoObjectFieldValidatorSetBuilder;
 import field_validator.object_field_validator.ObjectFieldValidatorSet;
-import field_validator.object_field_validator.ObjectFieldValidatorSetBuilder;
 import field_validator.records.FieldErrors;
 import field_validator.records.Person;
 import field_validator.records.Person_Errors;
-import field_validator.string_validator_function.StringValidatorBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main_ObjectFieldValidatorSetBuilder {
+public class Main_AutoObjectFieldValidatorSetBuilder {
 
     public static void main(String[] args) {
 
-        ObjectFieldValidatorSet<Person> validator = ObjectFieldValidatorSetBuilder.<Person>create()
-                .field("name", Person::name, StringValidatorBuilder.create()
+        ObjectFieldValidatorSet<Person> validator = AutoObjectFieldValidatorSetBuilder.forPerson(Person.class)
+                .allStringFields(builder -> builder.maxLength(3))
+                .field("name", builder -> builder
                         .beginsWithUp()
-                        .endsWithLow()
-                        .minLength(2)
-                        .build())
-                .field("age", Person::age, StringValidatorBuilder.create()
+                        .endsWithLow())
+                .field("age", builder -> builder
                         .onlyDigits()
-                        .maxAge(130)
-                        .maxLength(3)
-                        .build())
+                        .maxAge(130))
                 .build();
 
         List<Person> persons = new ArrayList<>();
@@ -52,50 +48,4 @@ public class Main_ObjectFieldValidatorSetBuilder {
         return personsErrors;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
