@@ -1,7 +1,9 @@
-package field_validator.string_validator_function;
+package field_validator.string_validator_function.main;
 
 import field_validator.records.FieldErrors;
 import field_validator.records.Person;
+import field_validator.string_validator_function.StringValidator;
+import field_validator.string_validator_function.StringValidatorBuilder;
 
 import java.util.List;
 
