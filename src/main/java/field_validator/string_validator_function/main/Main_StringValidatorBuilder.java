@@ -1,4 +1,7 @@
-package field_validator.string_validator;
+package field_validator.string_validator_function.main;
+
+import field_validator.string_validator_function.StringValidator;
+import field_validator.string_validator_function.StringValidatorBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -6,7 +9,7 @@ import java.util.Map;
 
 import static field_validator.string_validator.StringRules.onlyDigits;
 
-public class StringValidatorBuilder_Main {
+public class Main_StringValidatorBuilder {
 
     public static void main(String[] args) {
 

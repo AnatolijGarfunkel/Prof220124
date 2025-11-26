@@ -1,10 +1,13 @@
-package field_validator.string_validator;
+package field_validator.string_validator_function.main;
+
+import field_validator.string_validator_function.StringRules;
+import field_validator.string_validator_function.StringValidator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StringValidator_Main {
+public class Main_StringValidator {
 
     public static void main(String[] args) {
 

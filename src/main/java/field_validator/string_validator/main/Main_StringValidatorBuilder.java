@@ -1,4 +1,7 @@
-package field_validator.string_validator_function;
+package field_validator.string_validator.main;
+
+import field_validator.string_validator.StringValidator;
+import field_validator.string_validator.StringValidatorBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.List;

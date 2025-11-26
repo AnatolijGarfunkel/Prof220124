@@ -1,7 +1,9 @@
-package field_validator.object_field_validator;
+package field_validator.object_field_validator.main;
 
+import field_validator.object_field_validator.ObjectFieldValidator;
 import field_validator.records.FieldErrors;
 import field_validator.records.Person;
+import field_validator.records.Person_Errors;
 import field_validator.string_validator_function.StringValidatorBuilder;
 
 import java.util.ArrayList;
@@ -27,38 +29,33 @@ public class Main_ObjectFieldValidator {
         validators.add(nameValidator);
         validators.add(ageValidator);
 
-        List<Person> persons = List.of(
-                new Person("Clara", "200"),
-                new Person("marcus", null),
-                new Person("DaNa", "25"),
-                new Person(null, ""),
-                new Person("a", "2020"),
-                new Person("Martin", "37"),
-                new Person("BOb", "abc")
-        );
+        List<Person> persons = new ArrayList<>();
+        persons.add(new Person("Clara", "200"));
+        persons.add(new Person("marcus", null));
+        persons.add(new Person("DaNa", "25"));
+        persons.add(new Person(null, ""));
+        persons.add(new Person("a", "2020"));
+        persons.add(new Person("Martin", "37"));
+        persons.add(new Person("BOb", "abc"));
 
-        List<FieldErrors> fieldErrorsList = validatePersons(persons, validators);
-        for (FieldErrors fieldErrors : fieldErrorsList) {
-            System.out.println();
-            if (fieldErrors.messages().isEmpty())
-                System.out.println(fieldErrors.field() + ": " + fieldErrors.value() + ": OK");
-            else {
-                List<String> messages = fieldErrors.messages();
-                for (String message : messages)
-                    System.out.println(fieldErrors.field() + ": " + fieldErrors.value() + ": " + message);
-            }
+        List<Person_Errors> personsErrors = validatePersons(persons, validators);
+
+        for (Person_Errors personErrors : personsErrors) {
+            personErrors.print();
         }
     }
 
-    public static List<FieldErrors> validatePersons(List<Person> persons, List<ObjectFieldValidator<Person>> validators) {
-        List<FieldErrors> fieldErrorsList = new ArrayList<>();
+    public static List<Person_Errors> validatePersons(List<Person> persons, List<ObjectFieldValidator<Person>> validators) {
+        List<Person_Errors> personsErrors = new ArrayList<>();
         for (Person person : persons) {
+            List<FieldErrors> fieldErrorsList = new ArrayList<>();
             for (ObjectFieldValidator<Person> validator : validators) {
                 FieldErrors fieldErrors = validator.validateObject(person);
                 fieldErrorsList.add(fieldErrors);
             }
+            personsErrors.add(new Person_Errors(person, fieldErrorsList));
         }
-        return fieldErrorsList;
+        return personsErrors;
     }
 }
 

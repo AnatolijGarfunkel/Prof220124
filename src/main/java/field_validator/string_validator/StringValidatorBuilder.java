@@ -1,7 +1,5 @@
 package field_validator.string_validator;
 
-import java.util.function.Consumer;
-
 public class StringValidatorBuilder {
 
     private final StringValidator validator = new StringValidator();
