@@ -13,7 +13,7 @@ public class Main_AutoObjectFieldValidatorSetBuilder {
 
     public static void main(String[] args) {
 
-        ObjectFieldValidatorSet<Person> validator = AutoObjectFieldValidatorSetBuilder.forPerson(Person.class)
+        ObjectFieldValidatorSet<Person> validator = AutoObjectFieldValidatorSetBuilder.forClass(Person.class)
                 .allStringFields(builder -> builder.maxLength(3))
                 .field("name", builder -> builder
                         .beginsWithUp()
