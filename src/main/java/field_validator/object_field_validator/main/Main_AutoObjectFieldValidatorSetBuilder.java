@@ -13,8 +13,8 @@ public class Main_AutoObjectFieldValidatorSetBuilder {
 
     public static void main(String[] args) {
 
-        ObjectFieldValidatorSet<Person> validator = AutoObjectFieldValidatorSetBuilder.forPerson(Person.class)
-                .allStringFields(builder -> builder.maxLength(3))
+        ObjectFieldValidatorSet<Person> validator = AutoObjectFieldValidatorSetBuilder.forRecord(Person.class)
+                .allStringFields(builder -> builder.maxLength(4))
                 .field("name", builder -> builder
                         .beginsWithUp()
                         .endsWithLow())
@@ -28,7 +28,7 @@ public class Main_AutoObjectFieldValidatorSetBuilder {
         persons.add(new Person("marcus", null));
         persons.add(new Person("DaNa", "25"));
         persons.add(new Person(null, ""));
-        persons.add(new Person("a", "2020"));
+        persons.add(new Person("a", "20205"));
         persons.add(new Person("Martin", "37"));
         persons.add(new Person("BOb", "abc"));
 
