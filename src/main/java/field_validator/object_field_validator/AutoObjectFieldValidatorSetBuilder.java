@@ -6,8 +6,8 @@ import field_validator.string_validator_function.StringValidatorBuilder;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.RecordComponent;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -15,66 +15,58 @@ public class AutoObjectFieldValidatorSetBuilder<T> {
 
     private record FieldInfo(String field, Method accessor) {}
 
-    private final List<FieldInfo> fieldInfos = new ArrayList<>();
-
-    private final List<StringValidatorBuilder> stringValidatorBuilders = new ArrayList<>();
-
-    private final ObjectFieldValidatorSet<T> objectFieldValidatorsSet = new ObjectFieldValidatorSet<>();
+    private final Map<FieldInfo, StringValidatorBuilder> perFieldBuilders = new LinkedHashMap<>();
 
     private AutoObjectFieldValidatorSetBuilder(Class<T> tClass) {
+        initStringComponents(tClass);
+    }
+
+    private void initStringComponents(Class<T> tClass) {
         RecordComponent[] components = tClass.getRecordComponents();
         for (RecordComponent component : components) {
             if (component.getType() == String.class) {
                 String field = component.getName();
                 Method accessor = component.getAccessor();
-                fieldInfos.add(new FieldInfo(field, accessor));
+                perFieldBuilders.put(new FieldInfo(field, accessor), StringValidatorBuilder.create());
             }
         }
+
     }
 
-    public static <T> AutoObjectFieldValidatorSetBuilder<T> forClass(Class<T> tClass) {
+    public static <T> AutoObjectFieldValidatorSetBuilder<T> forRecord(Class<T> tClass) {
         return new AutoObjectFieldValidatorSetBuilder<>(tClass);
     }
 
     public AutoObjectFieldValidatorSetBuilder<T> allStringFields(Consumer<StringValidatorBuilder> config) {
-        for (int i = 0; i < fieldInfos.size(); i++) {
-            StringValidatorBuilder stringValidatorBuilder = StringValidatorBuilder.create();
-            config.accept(stringValidatorBuilder);
-            stringValidatorBuilders.add(stringValidatorBuilder);
-        }
+        for(StringValidatorBuilder builder : perFieldBuilders.values())
+            config.accept(builder);
         return this;
     }
 
     public AutoObjectFieldValidatorSetBuilder<T> field(String field, Consumer<StringValidatorBuilder> config) {
-        int index = 0;
-        for (FieldInfo fieldInfo : fieldInfos) {
-            if (fieldInfo.field().equals(field)) {
-                StringValidatorBuilder stringValidatorBuilder = stringValidatorBuilders.get(index);
-                config.accept(stringValidatorBuilder);
-            }
-            index++;
-        }
+        for (Map.Entry<FieldInfo, StringValidatorBuilder> pair : perFieldBuilders.entrySet())
+            if (pair.getKey().field().equals(field))
+                config.accept(pair.getValue());
         return this;
     }
 
     public ObjectFieldValidatorSet<T> build() {
-        for (int i = 0; i < fieldInfos.size(); i++) {
-            FieldInfo fieldInfo = fieldInfos.get(i);
-            String field = fieldInfo.field();
+        ObjectFieldValidatorSet<T> objectFieldValidatorSet = new ObjectFieldValidatorSet<>();
+        for (Map.Entry<FieldInfo, StringValidatorBuilder> pair : perFieldBuilders.entrySet()) {
+            String field = pair.getKey().field();
             Function<T, String> extractor = object -> {
                 try {
-                    Object value = fieldInfo.accessor().invoke(object);
+                    Object value = pair.getKey().accessor().invoke(object);
                     return value != null ? value.toString() : null;
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             };
-            StringValidatorBuilder stringValidatorBuilder = stringValidatorBuilders.get(i);
+            StringValidatorBuilder stringValidatorBuilder = pair.getValue();
             StringValidator stringValidator = stringValidatorBuilder.build();
-            ObjectFieldValidator<T> objectFieldValidator = new ObjectFieldValidator<>(field, extractor, stringValidator);
-            objectFieldValidatorsSet.addObjectFieldValidator(objectFieldValidator);
+            objectFieldValidatorSet.addObjectFieldValidator(new ObjectFieldValidator<>(field, extractor, stringValidator));
         }
-        return objectFieldValidatorsSet;
+        return objectFieldValidatorSet;
     }
 }
 
