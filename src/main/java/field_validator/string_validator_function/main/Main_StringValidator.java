@@ -20,6 +20,7 @@ public class Main_StringValidator {
         test.put("12ab", "12ab");
 
         StringValidator validator = new StringValidator();
+        validator.setRequired(true);
         validator.addRule(StringRules.beginsWithUp());
         validator.addRule(StringRules.maxLength(5));
         validator.addRule(StringRules.minLength(2));

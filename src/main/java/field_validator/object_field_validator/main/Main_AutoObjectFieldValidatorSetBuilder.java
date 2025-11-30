@@ -16,9 +16,11 @@ public class Main_AutoObjectFieldValidatorSetBuilder {
         ObjectFieldValidatorSet<Person> validator = AutoObjectFieldValidatorSetBuilder.forRecord(Person.class)
                 .allStringFields(builder -> builder.maxLength(4))
                 .field("name", builder -> builder
+                        .required()
                         .beginsWithUp()
                         .endsWithLow())
                 .field("age", builder -> builder
+                        .optional()
                         .onlyDigits()
                         .maxAge(130))
                 .build();

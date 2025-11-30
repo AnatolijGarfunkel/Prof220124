@@ -14,12 +14,14 @@ public class Main_ObjectFieldValidator {
     public static void main(String[] args) {
 
         ObjectFieldValidator<Person> nameValidator = new ObjectFieldValidator<>("name", Person::name, StringValidatorBuilder.create()
+                .required()
                 .beginsWithUp()
                 .endsWithLow()
                 .minLength(2)
                 .build());
 
         ObjectFieldValidator<Person> ageValidator = new ObjectFieldValidator<>("age", Person::age, StringValidatorBuilder.create()
+                .optional()
                 .configure(value -> !value.chars().allMatch(Character::isDigit) ? "Wert darf nur Ziffern enthalten." : null)
                 .configure(value -> value.length() > 3 ? "Wert darf höchstens " + 3 + " Zeichen lang sein." : null)
                 .maxAge(130)

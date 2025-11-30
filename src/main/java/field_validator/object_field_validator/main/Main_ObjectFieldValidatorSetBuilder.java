@@ -16,11 +16,13 @@ public class Main_ObjectFieldValidatorSetBuilder {
 
         ObjectFieldValidatorSet<Person> validator = ObjectFieldValidatorSetBuilder.<Person>create()
                 .field("name", Person::name, StringValidatorBuilder.create()
+                        .required()
                         .beginsWithUp()
                         .endsWithLow()
                         .minLength(2)
                         .build())
                 .field("age", Person::age, StringValidatorBuilder.create()
+                        .optional()
                         .onlyDigits()
                         .maxAge(130)
                         .maxLength(3)

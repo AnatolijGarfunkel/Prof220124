@@ -23,11 +23,13 @@ public class Main_PersonValidation {
         persons.add(new Person("BOb", "abc"));
 
         StringValidator nameValidator = new StringValidator();
+        nameValidator.setRequired(true);
         nameValidator.addRule(StringRules.beginsWithUp());
         nameValidator.addRule(StringRules.endsWithLow());
         nameValidator.addRule(StringRules.minLength(2));
 
         StringValidator ageValidator = new StringValidator();
+        ageValidator.setOptional(true);
         ageValidator.addRule(StringRules.maxLength(3));
         ageValidator.addRule(StringRules.onlyDigits());
         ageValidator.addRule(StringRules.maxAge(130));

@@ -23,12 +23,14 @@ public class Main_FieldErrors {
         persons.add(new Person("BOb", "abc"));
 
         StringValidator nameValidator = StringValidatorBuilder.create()
+                .required()
                 .configure(value -> value.length() < 2 ? "Wert muss mindestens " + 2 + " Zeichen lang sein." : null)
                 .beginsWithUp()
                 .endsWithLow()
                 .build();
 
         StringValidator ageValidator = StringValidatorBuilder.create()
+                .optional()
                 .configure(value -> !value.chars().allMatch(Character::isDigit) ? "Wert darf nur Ziffern enthalten." : null)
                 .configure(value -> value.length() > 3 ? "Wert darf höchstens " + 3 + " Zeichen lang sein." : null)
                 .maxAge(130)

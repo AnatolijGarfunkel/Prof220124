@@ -6,7 +6,19 @@ import java.util.function.Function;
 
 public class StringValidator {
 
+    private boolean required = false;
+
+    private boolean optional = false;
+
     private final List<Function<String, String>> rules = new ArrayList<>();
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
+
+    public void setOptional(boolean optional) {
+        this.optional = optional;
+    }
 
     public void addRule(Function<String, String> rule) {
         rules.add(rule);
@@ -14,13 +26,19 @@ public class StringValidator {
 
     public List<String> validate(String value) {
         List<String> errors = new ArrayList<>();
-        if (value == null) {
-            errors.add("Wert darf nicht null sein.");
+
+        if (optional && (value == null || value.isEmpty()))
             return errors;
-        }
-        if (value.isEmpty()) {
-            errors.add("Wert darf nicht leer sein");
-            return errors;
+
+        if (required) {
+            if (value == null) {
+                errors.add("Wert darf nicht null sein.");
+                return errors;
+            }
+            if (value.isEmpty()) {
+                errors.add("Wert darf nicht leer sein");
+                return errors;
+            }
         }
 
         for (Function<String, String> rule : rules) {
