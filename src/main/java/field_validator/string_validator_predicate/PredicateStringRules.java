@@ -2,7 +2,7 @@ package field_validator.string_validator_predicate;
 
 import java.util.function.Predicate;
 
-public class StringRulesPredicate {
+public class PredicateStringRules {
 
     public static Predicate<String> minLength(int min) {
         return value -> value.length() >= min;
