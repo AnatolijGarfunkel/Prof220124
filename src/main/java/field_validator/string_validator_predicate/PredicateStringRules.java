@@ -12,6 +12,10 @@ public class PredicateStringRules {
         return value -> value.length() <= max;
     }
 
+    public static Predicate<String> onlyAlphabetic() {
+        return value -> value.chars().allMatch(Character::isAlphabetic);
+    }
+
     public static Predicate<String>  onlyDigits() {
         return value -> value.chars().allMatch(Character::isDigit);
     }

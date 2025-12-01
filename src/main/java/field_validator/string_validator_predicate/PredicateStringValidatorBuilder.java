@@ -47,6 +47,16 @@ public class PredicateStringValidatorBuilder {
         return this;
     }
 
+    public PredicateStringValidatorBuilder onlyAlphabetic() {
+        validator.addRule(PredicateStringRules.onlyAlphabetic(), "Wert darf nur Buchstaben enthalten");
+        return this;
+    }
+
+    public PredicateStringValidatorBuilder onlyAlphabetic(String message) {
+        validator.addRule(PredicateStringRules.onlyAlphabetic(), message);
+        return this;
+    }
+
     public PredicateStringValidatorBuilder maxLength(int max) {
         validator.addRule(PredicateStringRules.maxLength(max), "Wert darf höchstens " + max + " Zeichen lang sein.");
         return this;
