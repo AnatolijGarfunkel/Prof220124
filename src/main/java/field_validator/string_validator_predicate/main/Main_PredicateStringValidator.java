@@ -21,11 +21,9 @@ public class Main_PredicateStringValidator {
 
         PredicateStringValidator validator = new PredicateStringValidator();
         validator.setRequired(true);
-        validator.addRule(PredicateStringRules.beginsWithUp(), "beginnt nicht");
         validator.addRule(PredicateStringRules.maxLength(5), "maximum " + 5 + " zeichen");
         validator.addRule(PredicateStringRules.minLength(2), "mindestens " + 2 + " zeichen");
         validator.addRule(PredicateStringRules.onlyDigits(), "nur Ziffern");
-        validator.addRule(PredicateStringRules.maxAge(130), "maximum " + 130);
 
         for (Map.Entry<String, String> pair : test.entrySet()) {
             String key = pair.getKey();

@@ -5,7 +5,7 @@ import field_validator.object_field_validator.ObjectFieldValidatorSetBuilder;
 import field_validator.records.FieldErrors;
 import field_validator.records.Person;
 import field_validator.records.Person_Errors;
-import field_validator.string_validator_function.StringValidatorBuilder;
+import field_validator.string_validator_predicate.PredicateStringValidatorBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,13 @@ public class Main_ObjectFieldValidatorSetBuilder {
     public static void main(String[] args) {
 
         ObjectFieldValidatorSet<Person> validator = ObjectFieldValidatorSetBuilder.<Person>create()
-                .field("name", Person::name, StringValidatorBuilder.create()
+                .field("name", Person::name, PredicateStringValidatorBuilder.create()
                         .required()
-                        .beginsWithUp()
-                        .endsWithLow()
                         .minLength(2)
                         .build())
-                .field("age", Person::age, StringValidatorBuilder.create()
+                .field("age", Person::age, PredicateStringValidatorBuilder.create()
                         .optional()
                         .onlyDigits()
-                        .maxAge(130)
                         .maxLength(3)
                         .build())
                 .build();

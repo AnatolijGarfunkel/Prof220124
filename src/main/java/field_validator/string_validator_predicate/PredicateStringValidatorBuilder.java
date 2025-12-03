@@ -67,35 +67,35 @@ public class PredicateStringValidatorBuilder {
         return this;
     }
 
-    public PredicateStringValidatorBuilder maxAge(int age) {
-        validator.addRule(PredicateStringRules.maxAge(age), "Wert liegt nicht im Bereich zw. 0 und " + age);
-        return this;
-    }
-
-    public PredicateStringValidatorBuilder maxAge(int age, String message) {
-        validator.addRule(PredicateStringRules.maxAge(age), message);
-        return this;
-    }
-
-    public PredicateStringValidatorBuilder beginsWithUp() {
-        validator.addRule(PredicateStringRules.beginsWithUp(), "Wert beginnt nicht mit einem Großbuchstaben");
-        return this;
-    }
-
-    public PredicateStringValidatorBuilder beginsWithUp(String message) {
-        validator.addRule(PredicateStringRules.beginsWithUp(), message);
-        return this;
-    }
-
-    public PredicateStringValidatorBuilder endsWithLow() {
-        validator.addRule(PredicateStringRules.endsWithLow(), "Wert endet nicht mit einem Kleinbuchstaben");
-        return this;
-    }
-
-    public PredicateStringValidatorBuilder endsWithLow(String message) {
-        validator.addRule(PredicateStringRules.endsWithLow(), message);
-        return this;
-    }
+//    public PredicateStringValidatorBuilder maxAge(int age) {
+//        validator.addRule(PredicateStringRules.maxAge(age), "Wert liegt nicht im Bereich zw. 0 und " + age);
+//        return this;
+//    }
+//
+//    public PredicateStringValidatorBuilder maxAge(int age, String message) {
+//        validator.addRule(PredicateStringRules.maxAge(age), message);
+//        return this;
+//    }
+//
+//    public PredicateStringValidatorBuilder beginsWithUp() {
+//        validator.addRule(PredicateStringRules.beginsWithUp(), "Wert beginnt nicht mit einem Großbuchstaben");
+//        return this;
+//    }
+//
+//    public PredicateStringValidatorBuilder beginsWithUp(String message) {
+//        validator.addRule(PredicateStringRules.beginsWithUp(), message);
+//        return this;
+//    }
+//
+//    public PredicateStringValidatorBuilder endsWithLow() {
+//        validator.addRule(PredicateStringRules.endsWithLow(), "Wert endet nicht mit einem Kleinbuchstaben");
+//        return this;
+//    }
+//
+//    public PredicateStringValidatorBuilder endsWithLow(String message) {
+//        validator.addRule(PredicateStringRules.endsWithLow(), message);
+//        return this;
+//    }
 
     public PredicateStringValidatorBuilder configure(Predicate<String> rule, String message) {
         validator.addRule(rule, message);

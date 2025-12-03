@@ -1,7 +1,7 @@
 package field_validator.object_field_validator;
 
-import field_validator.string_validator_function.StringValidator;
-import field_validator.string_validator_function.StringValidatorBuilder;
+import field_validator.string_validator_predicate.PredicateStringValidator;
+import field_validator.string_validator_predicate.PredicateStringValidatorBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +15,7 @@ public class AutoObjectFieldValidatorSetBuilder<T> {
 
     private record FieldInfo(String field, Method accessor) {}
 
-    private final Map<FieldInfo, StringValidatorBuilder> perFieldBuilders = new LinkedHashMap<>();
+    private final Map<FieldInfo, PredicateStringValidatorBuilder> perFieldBuilders = new LinkedHashMap<>();
 
     private AutoObjectFieldValidatorSetBuilder(Class<T> tClass) {
         initStringComponents(tClass);
@@ -27,7 +27,7 @@ public class AutoObjectFieldValidatorSetBuilder<T> {
             if (component.getType() == String.class) {
                 String field = component.getName();
                 Method accessor = component.getAccessor();
-                perFieldBuilders.put(new FieldInfo(field, accessor), StringValidatorBuilder.create());
+                perFieldBuilders.put(new FieldInfo(field, accessor), PredicateStringValidatorBuilder.create());
             }
         }
 
@@ -37,14 +37,14 @@ public class AutoObjectFieldValidatorSetBuilder<T> {
         return new AutoObjectFieldValidatorSetBuilder<>(tClass);
     }
 
-    public AutoObjectFieldValidatorSetBuilder<T> allStringFields(Consumer<StringValidatorBuilder> config) {
-        for(StringValidatorBuilder builder : perFieldBuilders.values())
+    public AutoObjectFieldValidatorSetBuilder<T> allStringFields(Consumer<PredicateStringValidatorBuilder> config) {
+        for(PredicateStringValidatorBuilder builder : perFieldBuilders.values())
             config.accept(builder);
         return this;
     }
 
-    public AutoObjectFieldValidatorSetBuilder<T> field(String field, Consumer<StringValidatorBuilder> config) {
-        for (Map.Entry<FieldInfo, StringValidatorBuilder> pair : perFieldBuilders.entrySet())
+    public AutoObjectFieldValidatorSetBuilder<T> field(String field, Consumer<PredicateStringValidatorBuilder> config) {
+        for (Map.Entry<FieldInfo, PredicateStringValidatorBuilder> pair : perFieldBuilders.entrySet())
             if (pair.getKey().field().equals(field))
                 config.accept(pair.getValue());
         return this;
@@ -52,7 +52,7 @@ public class AutoObjectFieldValidatorSetBuilder<T> {
 
     public ObjectFieldValidatorSet<T> build() {
         ObjectFieldValidatorSet<T> objectFieldValidatorSet = new ObjectFieldValidatorSet<>();
-        for (Map.Entry<FieldInfo, StringValidatorBuilder> pair : perFieldBuilders.entrySet()) {
+        for (Map.Entry<FieldInfo, PredicateStringValidatorBuilder> pair : perFieldBuilders.entrySet()) {
             String field = pair.getKey().field();
             Function<T, String> extractor = object -> {
                 try {
@@ -62,8 +62,8 @@ public class AutoObjectFieldValidatorSetBuilder<T> {
                     throw new RuntimeException(e);
                 }
             };
-            StringValidatorBuilder stringValidatorBuilder = pair.getValue();
-            StringValidator stringValidator = stringValidatorBuilder.build();
+            PredicateStringValidatorBuilder stringValidatorBuilder = pair.getValue();
+            PredicateStringValidator stringValidator = stringValidatorBuilder.build();
             objectFieldValidatorSet.addObjectFieldValidator(new ObjectFieldValidator<>(field, extractor, stringValidator));
         }
         return objectFieldValidatorSet;

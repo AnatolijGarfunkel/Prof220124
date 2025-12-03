@@ -1,7 +1,8 @@
 package field_validator.object_field_validator;
 
 import field_validator.records.FieldErrors;
-import field_validator.string_validator_function.StringValidator;
+import field_validator.string_validator_predicate.PredicateStringValidator;
+//import field_validator.string_validator_function.StringValidator;
 
 import java.util.List;
 import java.util.function.Function;
@@ -12,9 +13,9 @@ public class ObjectFieldValidator<T> {
 
     private final Function<T, String> extractor;
 
-    private final StringValidator validator;
+    private final PredicateStringValidator validator;
 
-    public ObjectFieldValidator(String field, Function<T, String> extractor, StringValidator validator) {
+    public ObjectFieldValidator(String field, Function<T, String> extractor, PredicateStringValidator validator) {
         this.field = field;
         this.extractor = extractor;
         this.validator = validator;

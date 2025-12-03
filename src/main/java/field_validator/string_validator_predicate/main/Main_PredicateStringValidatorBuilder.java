@@ -27,8 +27,6 @@ public class Main_PredicateStringValidatorBuilder {
                 .configure(value -> value.chars().allMatch(Character::isDigit),"Wert darf nur Ziffern enthalten.")
                 .configure(value -> value.length() >= min, "Wert muss mindestens " + min + " Zeichen lang sein.")
                 .configure(value -> value.length() <= max, "Wert darf höchstens " + max + " Zeichen lang sein.")
-                .maxAge(age)
-                .beginsWithUp()
                 .build();
 
         for (Map.Entry<String, String> pair : test.entrySet()) {

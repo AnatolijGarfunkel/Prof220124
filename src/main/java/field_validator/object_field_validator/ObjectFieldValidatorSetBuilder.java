@@ -1,6 +1,7 @@
 package field_validator.object_field_validator;
 
 import field_validator.string_validator_function.StringValidator;
+import field_validator.string_validator_predicate.PredicateStringValidator;
 
 import java.util.function.Function;
 
@@ -16,7 +17,7 @@ public class ObjectFieldValidatorSetBuilder<T> {
         return new ObjectFieldValidatorSetBuilder<>();
     }
 
-    public ObjectFieldValidatorSetBuilder<T> field(String field, Function<T, String> extractor, StringValidator validator) {
+    public ObjectFieldValidatorSetBuilder<T> field(String field, Function<T, String> extractor, PredicateStringValidator validator) {
         ObjectFieldValidator<T> objectFieldValidator = new ObjectFieldValidator<>(field, extractor, validator);
         objectFieldValidatorsSet.addObjectFieldValidator(objectFieldValidator);
         return this;
