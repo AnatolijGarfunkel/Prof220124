@@ -1,13 +1,13 @@
-package field_validator.string_validator_function.main;
+package field_validator.string_validator_predicate.main;
 
-import field_validator.string_validator_function.StringRules;
-import field_validator.string_validator_function.StringValidator;
+import field_validator.string_validator_predicate.PredicateStringRules;
+import field_validator.string_validator_predicate.PredicateStringValidator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Main_StringValidator {
+public class Main_PredicateStringValidator {
 
     public static void main(String[] args) {
 
@@ -19,13 +19,11 @@ public class Main_StringValidator {
         test.put("123456", "123456");
         test.put("12ab", "12ab");
 
-        StringValidator validator = new StringValidator();
+        PredicateStringValidator validator = new PredicateStringValidator();
         validator.setRequired(true);
-        validator.addRule(StringRules.beginsWithUp());
-        validator.addRule(StringRules.maxLength(5));
-        validator.addRule(StringRules.minLength(2));
-        validator.addRule(StringRules.onlyDigits());
-        validator.addRule(StringRules.maxAge(130));
+        validator.addRule(PredicateStringRules.maxLength(5), "maximum " + 5 + " zeichen");
+        validator.addRule(PredicateStringRules.minLength(2), "mindestens " + 2 + " zeichen");
+        validator.addRule(PredicateStringRules.onlyDigits(), "nur Ziffern");
 
         for (Map.Entry<String, String> pair : test.entrySet()) {
             String key = pair.getKey();

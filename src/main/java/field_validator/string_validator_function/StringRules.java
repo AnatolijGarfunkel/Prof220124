@@ -29,13 +29,13 @@ public class StringRules {
         return value -> !Character.isUpperCase(value.charAt(0)) ? "Wert beginnt nicht mit einem Großbuchstaben" : null;
     }
 
-    public static Function<String,String> endsWithLow() {
+    public static Function<String, String> endsWithLow() {
         return value -> {
             value = value.substring(1);
             char[] chars = value.toCharArray();
             for (char c : chars)
                 if (!Character.isLowerCase(c))
-                    return  "Wert endet nicht mit einem Kleinbuchstaben";
+                    return "Wert endet nicht mit einem Kleinbuchstaben";
             return null;
         };
     }

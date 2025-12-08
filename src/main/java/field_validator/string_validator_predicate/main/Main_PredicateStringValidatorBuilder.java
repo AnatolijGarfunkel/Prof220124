@@ -1,14 +1,13 @@
-package field_validator.string_validator_function.main;
+package field_validator.string_validator_predicate.main;
 
-import field_validator.string_validator_function.StringRules;
-import field_validator.string_validator_function.StringValidator;
+import field_validator.string_validator_predicate.PredicateStringValidator;
+import field_validator.string_validator_predicate.PredicateStringValidatorBuilder;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Main_StringValidator {
-
+public class Main_PredicateStringValidatorBuilder {
     public static void main(String[] args) {
 
         Map<String, String> test = new LinkedHashMap<>();
@@ -19,13 +18,16 @@ public class Main_StringValidator {
         test.put("123456", "123456");
         test.put("12ab", "12ab");
 
-        StringValidator validator = new StringValidator();
-        validator.setRequired(true);
-        validator.addRule(StringRules.beginsWithUp());
-        validator.addRule(StringRules.maxLength(5));
-        validator.addRule(StringRules.minLength(2));
-        validator.addRule(StringRules.onlyDigits());
-        validator.addRule(StringRules.maxAge(130));
+        int min = 2;
+        int max = 5;
+        int age = 130;
+
+        PredicateStringValidator validator = PredicateStringValidatorBuilder.create()
+                .optional()
+                .configure(value -> value.chars().allMatch(Character::isDigit),"Wert darf nur Ziffern enthalten.")
+                .configure(value -> value.length() >= min, "Wert muss mindestens " + min + " Zeichen lang sein.")
+                .configure(value -> value.length() <= max, "Wert darf höchstens " + max + " Zeichen lang sein.")
+                .build();
 
         for (Map.Entry<String, String> pair : test.entrySet()) {
             String key = pair.getKey();
@@ -38,5 +40,6 @@ public class Main_StringValidator {
                 for (String error : errors)
                     System.out.println(error);
         }
+
     }
 }

@@ -7,12 +7,24 @@ public class StringValidatorBuilder {
     private final StringValidator validator = new StringValidator();
 
     private StringValidatorBuilder() {
-
+        //
     }
 
     public static StringValidatorBuilder create() {
 
         return new StringValidatorBuilder();
+    }
+
+    public StringValidatorBuilder required() {
+        validator.setRequired(true);
+        validator.setOptional(false);
+        return this;
+    }
+
+    public StringValidatorBuilder optional() {
+        validator.setOptional(true);
+        validator.setRequired(false);
+        return this;
     }
 
     public StringValidatorBuilder minLength(int length) {

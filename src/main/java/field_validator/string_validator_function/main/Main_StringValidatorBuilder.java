@@ -26,6 +26,7 @@ public class Main_StringValidatorBuilder {
         int age = 130;
 
         StringValidator validator = StringValidatorBuilder.create()
+                .optional()
                 .configure(value -> !value.chars().allMatch(Character::isDigit) ? "Wert darf nur Ziffern enthalten." : null)
                 .configure(value -> value.length() < length ? "Wert muss mindestens " + length + " Zeichen lang sein." : null)
                 .configure(value -> value.length() > max ? "Wert darf höchstens " + max + " Zeichen lang sein." : null)

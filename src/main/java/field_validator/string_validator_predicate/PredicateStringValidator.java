@@ -1,16 +1,18 @@
-package field_validator.string_validator_function;
+package field_validator.string_validator_predicate;
+
+import field_validator.records.StringRule;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
-public class StringValidator {
+public class PredicateStringValidator {
 
     private boolean required = false;
 
     private boolean optional = false;
 
-    private final List<Function<String, String>> rules = new ArrayList<>();
+    private final List<StringRule> rules = new ArrayList<>();
 
     public void setRequired(boolean required) {
         this.required = required;
@@ -20,8 +22,8 @@ public class StringValidator {
         this.optional = optional;
     }
 
-    public void addRule(Function<String, String> rule) {
-        rules.add(rule);
+    public void addRule(Predicate<String> rule, String message) {
+        rules.add(new StringRule(rule, message));
     }
 
     public List<String> validate(String value) {
@@ -41,11 +43,64 @@ public class StringValidator {
             }
         }
 
-        for (Function<String, String> rule : rules) {
-            String error = rule.apply(value);
-            if (error != null)
-                errors.add(error);
+        for (StringRule rule : rules) {
+            Predicate<String> predicate = rule.rule();
+            boolean test = predicate.test(value);
+            if (!test) {
+                String message = rule.message();
+                errors.add(message);
+            }
+
         }
+
         return errors;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
