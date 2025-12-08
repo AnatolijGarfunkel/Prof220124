@@ -18,8 +18,8 @@ public class Main {
 
         ObjectValidator<Person> validator = new ObjectValidator<>();
 
-        validator.addRue(nameNotEmpty);
-        validator.addRue(minorNeedsParentConsent);
+        validator.addRule(nameNotEmpty);
+        validator.addRule(minorNeedsParentConsent);
 
         Person person = new Person(null, 15, false);
 

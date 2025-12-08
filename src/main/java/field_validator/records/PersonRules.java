@@ -1,6 +1,6 @@
 package field_validator.records;
 
-import records_validator.obect_validator.person_rules.PersonFieldRules;
+import records_validator.person_validator.PersonFieldRules;
 
 import java.util.function.Predicate;
 

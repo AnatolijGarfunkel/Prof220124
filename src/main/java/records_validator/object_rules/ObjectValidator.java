@@ -7,7 +7,7 @@ public class ObjectValidator<T> {
 
     private final List<ObjectRule<T>> rules = new ArrayList<>();
 
-    public void addRue(ObjectRule<T> rule) {
+    public void addRule(ObjectRule<T> rule) {
         rules.add(rule);
     }
 
