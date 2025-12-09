@@ -2,7 +2,6 @@ package log_entry;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,8 +9,8 @@ public class LogAnalyzeMain {
 
     public static void main(String[] args) {
 
-        Path path = Path.of("log");
-        List<LogEntry> entries = new ArrayList<>();
+        Path path = Path.of(args[0]);
+        List<LogEntry> entries;
 
         try {
             entries = LogFileReader.readLogFile(path);
