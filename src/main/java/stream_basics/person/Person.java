@@ -36,10 +36,11 @@ public class Person {
 
 /*
 List<Person> people = List.of(
-        new Person("Anna", 25, "Berlin"),
-        new Person("Bernd", 17, "Hamburg"),
-        new Person("Clara", 32, "Berlin"),
-        new Person("Dirk", 15, "München"),
-        new Person("Eva", 40, "Hamburg")
+        new Person("Anna", 25, "Berlin",   3200),
+        new Person("Bernd", 17, "Hamburg", 0),
+        new Person("Clara", 32, "Berlin",  4500),
+        new Person("Dirk", 15, "München",  0),
+        new Person("Eva", 40, "Hamburg",   5100),
+        new Person("Fritz", 29, "Berlin",  3800)
 );
  */
