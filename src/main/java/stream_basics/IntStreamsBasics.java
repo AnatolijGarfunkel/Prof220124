@@ -1,8 +1,10 @@
 package stream_basics;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.*;
 
 public class IntStreamsBasics {
@@ -146,6 +148,32 @@ public class IntStreamsBasics {
 //                .average();
 //
 //        System.out.println(averageOfValidInts);
+
+//        List<Integer> evenNumbers = numbers.stream()
+//                .collect(
+//                        ArrayList::new,
+//                        (integers, integer) -> {
+//                            if (integer % 2 == 0)
+//                                integers.add(integer);
+//                        },
+//                        List::addAll
+//                );
+//
+//        System.out.println(evenNumbers);
+
+//        int sumEvenWithCollect = numbers.stream()
+//                .collect(
+//                        () -> new int[1],
+//                        (ints, integer) -> {
+//                            if (integer % 2 == 0)
+//                                ints[0] += integer;
+//                        },
+//                        (ints1, ints2) -> ints1[0] += ints2[0]
+//                )[0];
+//
+//        System.out.println(sumEvenWithCollect);
+
+
 
     }
 }
