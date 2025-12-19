@@ -11,6 +11,6 @@ public class BiConsumerExample {
 
         BiConsumer<Integer, Integer> mult = (a, b)  -> System.out.println(a * b);
         mult.accept(10, 5);
-        
+
     }
 }
